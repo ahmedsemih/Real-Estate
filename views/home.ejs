@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('./layouts/imports') %>
+    <title>Home</title>
+</head>
+<body>
+    <div class="home">
+
+    <!-- Opening -->
+    <div class="background d-flex justify-content-center">
+            <div class="middle-area d-flex flex-column justify-content-center align-items-center">
+                <h1 class="brand d-flex align-items-center"><i class="fa-solid fa-house-chimney me-3"></i><span class="fw-bolder">REAL ESTATE</span></h1>
+                <div class="input-group mb-3 rounded-pill my-5">
+                    <input type="text" class="form-control p-2" placeholder="Search a location... (e.g. : Ankara, Istanbul)">
+                    <button class="btn btn-danger px-3" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+                <div class="mt-4 d-flex justify-content-center">
+                    <div class="search-button mx-5 fs-3 d-flex flex-column align-items-center">
+                        <i class="fa-solid fa-house-lock"></i>
+                        <p>Sale</p>
+                    </div>
+                    <div class="search-button mx-5 fs-3 d-flex flex-column align-items-center">
+                        <i class="fa-solid fa-house-circle-exclamation"></i>
+                        <p>Rent</p>
+                    </div>
+                    <div class="search-button mx-5 fs-3 d-flex flex-column align-items-center">
+                        <i class="fa-solid fa-house-chimney-medical"></i>
+                        <p>Sell</p>
+                    </div>
+                </div>
+            </div>
+            <div class="position-absolute d-flex flex-column align-items-center fs-5 lh-1 bottom-0 start-50 translate-middle">
+                <p>Scroll down to take a look</p>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+    </div>
+    <!-- Opening End -->
+
+    <!-- Discover -->
+    <div class="discover container-md py-5">
+        <h2 class="mb-3 fw-light ms-2">New Sale Listings</h2>
+        <div class="cards mb-5 d-flex">
+        <div class="card w-25 m-2">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body fs-5">
+              <h5 class="card-title mb-3 fs-4">1.222.222 ₺</h5>
+              <p class="info">On sale 2+1, 100m, 2.Floor</p>
+              <p class="location">Esenler, Istanbul</p>
+              <div class="d-flex justify-content-end">
+              <a href="#" class="btn btn-danger me-3 w-50"><i class="fa-solid fa-magnifying-glass"></i></a>
+              <a href="#" class="btn btn-outline-danger w-50" ><i class="fa-regular fa-heart"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+          <h2 class="my-3 fw-light ms-2">New Rent Listings</h2>
+        <div class="card w-25">
+            <img src="..." class="card-img-top" alt="...">
+            <div class="card-body fs-5">
+              <h5 class="card-title mb-3 fs-4">1.222.222 ₺</h5>
+              <p class="info">On sale 2+1, 100m, 2.Floor</p>
+              <p class="location">Esenler, Istanbul</p>
+              <div class="d-flex justify-content-end">
+              <a href="#" class="btn btn-danger me-3 w-50"><i class="fa-solid fa-magnifying-glass"></i></a>
+              <a href="#" class="btn btn-outline-danger w-50" ><i class="fa-regular fa-heart"></i></a>
+              </div>
+            </div>
+          </div>
+    </div>
+    <!-- Discover End -->
+   
+    </div>
+    <%- include('./layouts/footer') %>
+</body>
+</html>
