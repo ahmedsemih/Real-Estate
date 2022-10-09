@@ -7,6 +7,19 @@
     font-family: 'Oswald', sans-serif;
 }
 
+a{
+    text-decoration: none;
+    margin: 0px;
+    padding: 0px;
+    color: inherit;
+}
+a:hover{
+    color: inherit;
+}
+a:active{
+    color: inherit;
+}
+
 /* HOME PAGE */
 .home{
     overflow-x: hidden;
@@ -59,7 +72,7 @@
 }
 
 /* SEARCH */
-input[type=checkbox]:checked{
+input[type=checkbox]:checked, input[type=radio]:checked{
     background-color: #dc3545;
     border-color: #dc3545;
 }
@@ -83,9 +96,23 @@ input::-webkit-inner-spin-button {
     min-width: 100px;
 }
 
-/* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+/* AUTH */
+.form-div{
+    width:30vw;
+    min-width: 260px;
+    max-width: 500px;
+}
+
+.auth-type{
+    width:220px
+}
+
+.toggle-left-label{
+    margin-right: 32px;
 }
 
 /* MEDIA QUERIES */
@@ -111,6 +138,9 @@ input[type=number] {
     .searchbar{
         width: 100% !important;
         
+    }
+    .toggle-left-label{
+        margin-right: 24px;
     }
 }
 

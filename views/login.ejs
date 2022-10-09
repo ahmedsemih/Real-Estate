@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./layouts/imports.ejs') %>
+    <title>Real Estate | Login</title>
+  </head>
+  <body>
+    <%- include('./layouts/navbar.ejs') %>
+
+    <div class="container-md d-flex justify-content-center align-items-center flex-column py-5">
+      <form class="form-div p-3 mb-2" action="/auth/login" method="POST">
+        <h1 class="text-center mb-5">Login</h1>
+        <div class="input-group mb-3">
+          <span class="input-group-text bg-danger text-white">
+            <i class="fa-solid fa-envelope"></i>
+          </span>
+          <div class="form-floating">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              placeholder="Email"
+              required
+            />
+            <label for="email">Email</label>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text bg-danger text-white">
+            <i class="fa fa-lock"></i>
+          </span>
+          <div class="form-floating">
+            <input
+              class="form-control password"
+              type="password"
+              name="password"
+              required
+              placeholder="Password"
+            />
+            <label for="password">Password</label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-danger form-control fs-5">
+          Login
+        </button>
+        <div class="text-center">
+          <p class="fs-5 my-4">You don't have an account?</p>
+          <a href="/auth/signup">
+            <button type="button" class="btn btn-outline-danger w-100 fs-5">
+              Create Account
+            </button>
+          </a>
+        </div>
+      </form>
+    </div>
+
+    <%- include('./layouts/footer.ejs') %>
+  </body>
+</html>
