@@ -1,3 +1,4 @@
+const sequelize = require("./configs/database");
 const express = require("express");
 require("dotenv").config();
 
@@ -21,4 +22,8 @@ app.use("/account", accountRoutes);
 
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
+});
+
+sequelize.sync().then(() => {
+  console.log("All datas synced");
 });
