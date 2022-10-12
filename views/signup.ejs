@@ -13,20 +13,29 @@
             <div class="fs-5 d-flex align-items-center auth-type mx-auto">
               <p class="toggle-left-label">Individual</p>
               <div class="form-check form-switch mb-3">
-                <input class="form-check-input fs-3 me-1" type="checkbox" role="switch" id="authType" value="corporate">
+                <input class="form-check-input fs-3 me-1" type="checkbox" <%= isCorporate ? 'checked' : null %> role="switch" id="authType" name="accountType" value="true">
               </div>
               <p class="ms-1">Corporate</p>
             </div>
-            <div class="input-group mb-3">
+            <% if(message){ %>
+              <div class="text-bg-danger form-control p-3 mb-3">
+                <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                <%= message %>
+              </div>
+            <% } %>
+            <div class="input-group mt-3">
               <span class="input-group-text bg-danger text-white">
                 <i class="fa-solid fa-user"></i>
               </span>
               <div class="form-floating">
-                  <input type="text" class="form-control" name="fullname" placeholder="Full Name" required>
-                  <label for="fullname">Full Name</label>
+                  <input type="text" class="form-control" name="fullName" placeholder="Full Name" required>
+                  <label for="fullName">Full Name</label>
               </div>
             </div>
-            <div class="input-group mb-3">
+            <% if(fullNameError){ %>
+              <p class="text-danger"><%= fullNameError %></p>
+            <% } %>
+            <div class="input-group mt-3">
               <span class="input-group-text bg-danger text-white">
                 <i class="fa-solid fa-envelope"></i>
               </span>
@@ -35,7 +44,10 @@
                 <label for="email">Email</label>
               </div>
             </div>
-            <div class="input-group mb-3">
+            <% if(emailError){ %>
+              <p class="text-danger"><%= emailError %></p>
+            <% } %>
+            <div class="input-group mt-3">
               <span class="input-group-text bg-danger text-white">
                 <i class="fa-solid fa-phone"></i>
               </span>
@@ -44,7 +56,10 @@
                   <label for="phone">Phone</label>
               </div>
             </div>
-            <div class="input-group mb-3">
+            <% if(phoneError){ %>
+              <p class="text-danger"><%= phoneError %></p>
+            <% } %>
+            <div class="input-group mt-3">
                 <span class="input-group-text bg-danger text-white">
                   <i class="fa fa-lock"></i>
                 </span>
@@ -53,45 +68,60 @@
                     <label for="password">Password</label>
                 </div>
             </div>
-            <div class="d-none" id="corporateArea">
+            <% if(passwordError){ %>
+              <p class="text-danger"><%= passwordError %></p>
+            <% } %>
+            <div class="<%= isCorporate ? 'd-block' : 'd-none' %>" id="corporateArea">
               <p class="fs-5 text-center fw-bold">Company Informations</p>
               <div class="d-flex justify-content-between my-2">
               <div class="form-check me-3 fs-5">
-                <input class="form-check-input" type="radio" name="companyType" id="realEstate" checked value="realEstate">
+                <input class="form-check-input" type="radio" name="type" id="realEstate" checked value="Real Estate Office">
                 <label class="form-check-label" for="realEstate">
                   Real Estate Office
                 </label>
               </div>
               <div class="form-check fs-5">
-                <input class="form-check-input" type="radio" name="companyType" id="buildingCompany" value="buildingCompany">
+                <input class="form-check-input" type="radio" name="type" id="buildingCompany" value="Building Company">
                 <label class="form-check-label" for="buildingCompany">
                   Building Company
                 </label>
               </div>
             </div>
-              <div class="input-group mb-3">
+              <div class="input-group mt-3">
                 <span class="input-group-text bg-danger text-white">
                   <i class="fa-solid fa-building"></i>
                 </span>
                 <div class="form-floating">
-                    <input type="text" class="form-control" name="companyName" placeholder="Company Name">
+                    <input type="text" class="form-control" name="companyName" id="companyName" placeholder="Company Name">
                     <label for="companyName">Company Name</label>
                 </div>
               </div>
-              <div class="input-group mb-3">
+              <% if(companyNameError){ %>
+                <p class="text-danger"><%= companyNameError %></p>
+              <% } %>
+              <div class="input-group mt-3">
                 <span class="input-group-text bg-danger text-white">
                   <i class="fa-solid fa-location-dot"></i>
                 </span>
                 <div class="form-floating">
-                    <input type="text" class="form-control" name="companyAddress" placeholder="Company Address">
+                    <input type="text" class="form-control" name="companyAddress" id="companyAddress" placeholder="Company Address">
                     <label for="companyAddress">Company Address</label>
                 </div>
               </div>
+              <% if(companyAddressError){ %>
+                <p class="text-danger"><%= companyAddressError %></p>
+              <% } %>
             </div>
-            <button type="submit" class="btn btn-danger form-control fs-5">Create Account</button>
+            <div class="mb-3">
+              <input class="form-check-input me-1" type="checkbox" id="terms" name="terms" value="yes">
+              <label class="form-check-label" for="terms">
+                  I agree the <em href="#">Terms of Service</em> and <em href="#">Privacy Policy</em>.
+              </label>
+          </div>
+            <button type="submit" id="submitBtn" class="btn btn-danger form-control fs-5 <%= !again && 'disabled' %> ">Create Account</button>
             <div class="text-center">
             <p class="fs-5 my-4">You already have an account?</p>
-            <a href="/auth/signup">
+            <a href="/auth/login">
                 <button type="button" class="btn btn-outline-danger w-100 fs-5">Login</button>
             </a>
         </div>
