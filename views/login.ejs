@@ -10,6 +10,17 @@
     <div class="container-md d-flex justify-content-center align-items-center flex-column py-5">
       <form class="form-div p-3 mb-2" action="/auth/login" method="POST">
         <h1 class="text-center mb-5">Login</h1>
+
+        <!-- Error Message -->
+        <% if(message){ %>
+          <div class="text-bg-danger form-control p-3 mb-3">
+            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+            <%= message %>
+          </div>
+        <% } %>
+        <!-- Error Message End -->
+
+        <!-- Email -->
         <div class="input-group mb-3">
           <span class="input-group-text bg-danger text-white">
             <i class="fa-solid fa-envelope"></i>
@@ -25,6 +36,9 @@
             <label for="email">Email</label>
           </div>
         </div>
+        <!-- Email End -->
+
+        <!-- Password -->
         <div class="input-group mb-3">
           <span class="input-group-text bg-danger text-white">
             <i class="fa fa-lock"></i>
@@ -40,6 +54,8 @@
             <label for="password">Password</label>
           </div>
         </div>
+        <!-- Password End -->
+
         <button type="submit" class="btn btn-danger form-control fs-5">
           Login
         </button>

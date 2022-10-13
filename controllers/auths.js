@@ -1,9 +1,11 @@
 const bcrypt = require("bcryptjs");
-const e = require("express");
+const jwt = require("jsonwebtoken");
+require('dotenv').config();
+
 const User = require("../models/User");
 
 exports.getLoginPage = (req, res) => {
-  res.render("login");
+  res.render("login",{message:""});
 };
 
 exports.getSignUpPage = (req, res) => {
@@ -20,7 +22,24 @@ exports.getSignUpPage = (req, res) => {
   });
 };
 
-exports.login = (req, res) => {};
+exports.login = (req, res) => {
+    const {email,password}=req.body;
+
+    User.findOne({where:{email}})
+    .then((user)=>{
+        if(!user) return res.render('login',{message:"Wrong email or password."});
+            bcrypt.compare(password,user.password)
+            .then((same)=>{
+                if(!same) return res.render('login',{message:"Wrong email or password."});
+                const accessToken=jwt.sign({id:user.id,role:user.type},process.env.SECRET_KEY,{expiresIn:"1h"});
+                res.cookie("accessToken",accessToken,{maxAge:Date.now()+3600000,httpOnly:true,signed:process.env.COOKIE_SECRET});
+                res.cookie("currentUser",user.id,{maxAge:Date.now()+3600000,httpOnly:true,signed:process.env.COOKIE_SECRET});
+                const url=req.cookies.previousPage || '/sale';
+                res.clearCookie("previousPage");
+                res.redirect(url);
+            });
+    }).catch((error)=>console.log(error));
+};
 
 exports.createAccount = (req, res) => {
   const {
@@ -143,5 +162,7 @@ exports.createAccount = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-
+  res.clearCookie("accessToken",{signed:process.env.COOKIE_SECRET});
+  res.clearCookie("currentUser",{signed:process.env.COOKIE_SECRET});
+  res.redirect("/");
 };
