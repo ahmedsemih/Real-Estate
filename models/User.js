@@ -46,7 +46,7 @@ const User = sequelize.define("User",{
       allowNull: false,
       validate: {
         len: {
-          args: [5, 30],
+          args: [5, 255],
           msg: "password must be min 5 - max 30 characters.",
         },
       },
@@ -82,8 +82,8 @@ const User = sequelize.define("User",{
     hooks: {
       beforeCreate: async (user) => {
         if (user.password) user.password = await bcrypt.hash(user.password, 10);
-      },
-    },
+      }
+    }
   });
 
 module.exports = User;

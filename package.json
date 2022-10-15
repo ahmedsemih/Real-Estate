@@ -17,6 +17,7 @@
   "author": "Ahmed Semih Erkan",
   "license": "MIT",
   "dependencies": {
+    "axios": "^1.1.2",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",

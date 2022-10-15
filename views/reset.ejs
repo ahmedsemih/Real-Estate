@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real Estate | Reset</title>
+    <%- include('./layouts/imports.ejs') %>
+  </head>
+  <body>
+    <%- include('./layouts/navbar.ejs') %>
+
+    <% if(resetId){ %>
+    <div class="container-md">
+      <div class="row reset-div">
+        <form
+          action="/accounts/reset/<%= resetId %>?_method=PUT"
+          method="POST"
+          class="col-md-6 py-5 px-3"
+        >
+          <h2>Change Email</h2>
+
+          <!-- Error Message -->
+          <% if(emailError){ %>
+            <p class="text-danger fs-4 fw-bold">*<%= emailError %>*</p>
+            <% } %>
+          <!-- Error Message End -->
+
+          <!-- Old Email Area -->
+          <div class="input-group my-3">
+            <span class="input-group-text bg-danger text-white">
+              <i class="fa-solid fa-envelope"></i>
+            </span>
+            <div class="form-floating">
+              <input
+                type="email"
+                class="form-control"
+                name="oldEmail"
+                placeholder="Old Email"
+                required
+              />
+              <label for="oldEmail">Old Email</label>
+            </div>
+          </div>
+          <!-- Old Email End -->
+
+          <!-- New Email Area -->
+          <div class="input-group my-3">
+            <span class="input-group-text bg-danger text-white">
+              <i class="fa-solid fa-envelope"></i>
+            </span>
+            <div class="form-floating">
+              <input
+                type="email"
+                class="form-control"
+                name="newEmail"
+                placeholder="New Email"
+                required
+              />
+              <label for="newEmail">New Email</label>
+            </div>
+          </div>
+          <!-- New Email End -->
+
+          <button type="submit" class="btn btn-danger form-control">
+            Change
+          </button>
+        </form>
+        <form
+          action="/accounts/reset/<%= resetId %>?_method=PUT"
+          method="POST"
+          class="col-md-6 py-5 px-3"
+        >
+          <h2>Change Password</h2>
+
+          <!-- Error Message -->
+          <% if(passwordError){ %>
+          <p class="text-danger fs-4 fw-bold">*<%= passwordError%>*</p>
+          <% } %>
+          <!-- Error Message End -->
+
+          <!-- Old Password -->
+          <div class="input-group my-3">
+            <span class="input-group-text bg-danger text-white">
+              <i class="fa fa-lock"></i>
+            </span>
+            <div class="form-floating">
+              <input
+                class="form-control password"
+                type="password"
+                name="oldPassword"
+                required
+                placeholder="Old Password"
+              />
+              <label for="oldPassword">Old Password</label>
+            </div>
+          </div>
+          <!-- Old Password End -->
+
+          <!-- New Password -->
+          <div class="input-group my-3">
+            <span class="input-group-text bg-danger text-white">
+              <i class="fa fa-lock"></i>
+            </span>
+            <div class="form-floating">
+              <input
+                class="form-control password"
+                type="password"
+                name="newPassword"
+                required
+                placeholder="New Password"
+              />
+              <label for="newPassword">New Password</label>
+            </div>
+          </div>
+          <!-- New Password End -->
+
+          <button type="submit" class="btn btn-danger form-control">
+            Change
+          </button>
+        </form>
+      </div>
+    </div>
+    <% }else{ %>
+        <div class="container-md d-flex justify-content-center align-items-center forgot-div">
+            <div class="py-5 text-center">
+                <h1>Sorry, this link has expired.</h1>
+                <p class="text-muted fs-5">All links are available for only an hour.</p>
+            </div>
+        </div>
+    <% } %>
+    
+    <%- include('./layouts/footer.ejs') %>
+  </body>
+</html>
