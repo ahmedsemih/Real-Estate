@@ -6,6 +6,14 @@
     box-sizing: border-box;
     font-family: 'Oswald', sans-serif;
 }
+body{
+    background-color: rgb(246, 246, 246);
+}
+
+textarea{
+    resize: none;
+    height: 108px;
+}
 
 a{
     text-decoration: none;
@@ -61,8 +69,6 @@ a:focus{
 
 .active,.selected,.checked{
     color: #dc3545 !important;
-    color: #dc3545 !important;
-
 }
 
 /* FOOTER */
@@ -99,10 +105,6 @@ input::-webkit-inner-spin-button {
     min-width: 100px;
 }
 
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
 /* AUTH */
 .form-div{
     width:30vw;
@@ -129,6 +131,40 @@ input[type=number] {
 
 .forgot-div{
     min-height: 550px;
+}
+
+/* Seller */
+.user-image{
+    font-size: 64px;
+}
+
+.license:hover{
+    text-decoration: underline;
+}
+
+.seller-page{
+    min-height: 550px;
+}
+
+.ads{
+    min-height: 402px;
+}
+
+.seller-info{
+    max-height: 520px;
+}
+
+.page-link{
+    color: #dc3545;
+}
+.page-link:hover{
+    color: #FF0000;
+    background-color:#f2d8da;
+}
+.page-item .active{
+    background-color: #dc3545;
+    color: #fff !important;
+    border-color: #FF0000;
 }
 
 /* MEDIA QUERIES */

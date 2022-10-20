@@ -14,16 +14,17 @@
                       Account
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/account/infos">Informations</a></li>
-                      <li><a class="dropdown-item" href="/account/favorites">Favorites</a></li>
-                      <li><a class="dropdown-item" href="/account/ads">Ads</a></li>
+                      <li><a class="dropdown-item" href="/accounts/infos">Informations</a></li>
+                      <li><a class="dropdown-item" href="/accounts/favorites">Favorites</a></li>
+                      <li><a class="dropdown-item d-none d-md-block d-lg-none" href="/houses/new">Post New House</a></li>
+                      <li><a class="dropdown-item" href="/accounts/<%= locals.currentUser %>">Posted Houses</a></li>
                       <li class="border-top"><a class="dropdown-item" href="/auth/logout">Logout</a></li>
                     </ul>
                   </div>
             <% }else{ %>
                 <a href="/auth/signup" class="btn btn-danger me-2">Sign Up</a>
             <% } %>
-            <a href="" class="btn btn-outline-danger" >Post New Ad</a>
+            <a href="/houses/new" class="btn btn-outline-danger d-block d-md-none d-lg-block" >Post New House</a>
         </div>
     </div>
 </nav>
