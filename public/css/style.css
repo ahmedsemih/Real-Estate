@@ -70,6 +70,31 @@ a:focus{
 .active,.selected,.checked{
     color: #dc3545 !important;
 }
+.big-icon{
+    font-size: 100px;
+}
+
+/* USER INFO */
+.image-area{
+    width:250px;
+    margin: auto;
+}
+.user-photo{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: fill;
+    margin: 22px 0px;
+}
+.mini-image-area{
+    width:110px;
+}
+.mini-image{
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    object-fit: fill;
+}
 
 /* FOOTER */
 .footer-link{
@@ -148,6 +173,10 @@ input::-webkit-inner-spin-button {
 
 .ads{
     min-height: 402px;
+}
+
+.sort-btn{
+    text-transform: capitalize;
 }
 
 .seller-info{

@@ -8,8 +8,12 @@ function init() {
   const corporateArea = document.getElementById("corporateArea");
   const terms = document.getElementById("terms");
   const submitBtn = document.getElementById("submitBtn");
-  const companyName=document.getElementById('companyName');
-  const companyAddress=document.getElementById('companyAddress');
+  const companyName = document.getElementById("companyName");
+  const companyAddress = document.getElementById("companyAddress");
+  const imagesInput = document.getElementById("images");
+  const userImageInput = document.getElementById("userImage");
+  const citySelection = document.getElementById("city");
+  const districtSelection = document.getElementById("district");
 
   // Copyright
   const currentDate = new Date();
@@ -25,14 +29,81 @@ function init() {
   }
 
   // Toggle corporate area and its required
-  authTypeBtn.addEventListener("change", () => {
-    corporateArea.classList.toggle("d-none", !authTypeBtn.checked);
-    companyAddress.toggleAttribute('required',authTypeBtn.checked);
-    companyName.toggleAttribute('required',authTypeBtn.checked);
-  });
+  authTypeBtn &&
+    authTypeBtn.addEventListener("change", () => {
+      corporateArea.classList.toggle("d-none", !authTypeBtn.checked);
+      companyAddress.toggleAttribute("required", authTypeBtn.checked);
+      companyName.toggleAttribute("required", authTypeBtn.checked);
+    });
 
   // Terms check
-  terms.addEventListener("change", () => {
-    submitBtn.classList.toggle("disabled", !terms.checked);
+  terms &&
+    terms.addEventListener("change", () => {
+      submitBtn.classList.toggle("disabled", !terms.checked);
+    });
+
+  // Upload image to cloudinary for new houses
+  const sendFiles = async () => {
+    const images = document.getElementById("images").files;
+    const urlInput = document.getElementById("imageUrls");
+
+    for (let i = 0; i < images.length; i++) {
+      const data = new FormData();
+
+      data.append("file", images[i]);
+      data.append("upload_preset", "l7zb8egp");
+      data.append("cloud_name", "dtzs4c2uv");
+      fetch("https://api.cloudinary.com/v1_1/dtzs4c2uv/image/upload", {
+        method: "POST",
+        body: data,
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (i === images.length - 1) return (urlInput.innerText += data.url);
+          urlInput.innerText += data.url + " ";
+        });
+    }
+  };
+
+  imagesInput && imagesInput.addEventListener("change", () => {
+    sendFiles();
+  });
+
+  // Getting districts for selected city
+  citySelection &&
+    citySelection.addEventListener("change", (e) => {
+      let selectedCity = e.target.value;
+      for (let i = 0; i < districtSelection.childElementCount; i++) {
+        districtSelection.children[i].toggleAttribute(
+          "hidden",
+          !districtSelection.children[i].classList.contains(selectedCity)
+        );
+      }
+    });
+
+  // Upload image or logo
+  const sendImage = async () => {
+    const image = document.getElementById("userImage").files;
+    const urlInput = document.getElementById("userImageUrl");
+    const userPhoto = document.getElementById("userPhoto");
+
+    const data = new FormData();
+
+    data.append("file", image[0]);
+    data.append("upload_preset", "l7zb8egp");
+    data.append("cloud_name", "dtzs4c2uv");
+    fetch("https://api.cloudinary.com/v1_1/dtzs4c2uv/image/upload", {
+      method: "POST",
+      body: data,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.url);
+        urlInput.innerText = data.url;
+        userPhoto.src = data.url;
+      });
+  };
+  userImageInput && userImageInput.addEventListener("change", () => {
+    sendImage();
   });
 }

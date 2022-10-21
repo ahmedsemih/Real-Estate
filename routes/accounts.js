@@ -2,12 +2,18 @@ const express = require("express");
 const router = express.Router();
 
 const isAuthenticated = require("../middlewares/isAuthenticated");
-const { getInfoPage, updateUser,wantResetEmail, getResetPage,resetEmailAndPassword } = require("../controllers/accounts");
+const {
+  getInfoPage,
+  updateUser,
+  wantResetEmail,
+  getResetPage,
+  resetEmailAndPassword,
+  getSellerPage,
+} = require("../controllers/accounts");
 
-router.route("/:id").get();
-router.route("/:id").put(updateUser);
-router.route("/:id").delete();
 router.route("/infos").get(isAuthenticated, getInfoPage);
+router.route("/:id").get(getSellerPage);
+router.route("/:id").put(isAuthenticated,updateUser);
 
 // Email and password reset
 router.route("/want-reset/:email?").get(wantResetEmail);

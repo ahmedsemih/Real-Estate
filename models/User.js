@@ -9,6 +9,9 @@ const User = sequelize.define("User",{
       type: DataTypes.UUID(),
       defaultValue:DataTypes.UUIDV4()
     },
+    imageUrl:{
+      type:DataTypes.STRING
+    },
     fullName: {
       type: DataTypes.STRING(50),
       allowNull: false,

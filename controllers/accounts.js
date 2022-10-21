@@ -1,16 +1,20 @@
-const bcrypt=require("bcryptjs");
+const bcrypt = require("bcryptjs");
 const axios = require("axios");
 require("dotenv").config();
 
 const User = require("../models/User");
 const Reset = require("../models/Reset");
+const House = require("../models/House");
 const { Op } = require("sequelize");
+const City = require("../models/City");
+const District = require("../models/District");
 
 exports.getInfoPage = (req, res) => {
   const currentUser = req.signedCookies.currentUser;
   User.findByPk(currentUser)
     .then((user) => {
       const {
+        imageUrl,
         fullName,
         email,
         phone,
@@ -19,8 +23,10 @@ exports.getInfoPage = (req, res) => {
         companyName,
         companyAddress,
       } = user.dataValues;
-      const isCorporate = type !== "Individual" && type !== "Admin" ? true : false;
+      const isCorporate =
+        type !== "Individual" && type !== "Admin" ? true : false;
       res.render("infos", {
+        imageUrl,
         fullName,
         email,
         phone,
@@ -41,7 +47,7 @@ exports.getInfoPage = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  const { fullName, phone, companyName, oldCompanyName, companyAddress } =
+  const { fullName, phone, companyName, oldCompanyName, companyAddress, img } =
     req.body;
   const currentUser = req.signedCookies.currentUser;
 
@@ -51,6 +57,7 @@ exports.updateUser = (req, res) => {
       phone,
       companyName,
       companyAddress,
+      imageUrl: img,
     },
     { where: { id: req.signedCookies.currentUser } }
   )
@@ -132,11 +139,12 @@ exports.wantResetEmail = (req, res) => {
     },
   });
 
-  if(paramEmail === undefined && bodyEmail === undefined) return res.render("want-reset",{email:paramEmail});
+  if (paramEmail === undefined && bodyEmail === undefined)
+    return res.render("want-reset", { email: paramEmail });
 
   const email = paramEmail === undefined ? bodyEmail : paramEmail;
 
-  User.findOne({ where: {email}})
+  User.findOne({ where: { email } })
     .then((user) => {
       const { id } = user.dataValues;
       Reset.create({
@@ -151,61 +159,169 @@ exports.wantResetEmail = (req, res) => {
               "X-RapidAPI-Key": process.env.API_KEY,
               "X-RapidAPI-Host": process.env.API_HOST,
             },
-            data: {"personalizations":[{"to":[{"email":email}],"subject":"Reset"}],"from":{"email":"no-reply@realestate.com"},"content":[{"type":"text/html","value":"<h1>You can reset your email and password by clicking the link below.</h1><br><a href='"+ process.env.BASE_URL + "/accounts/reset/" + reset.id+"'>"+process.env.BASE_URL + "/accounts/reset/" + reset.id+"</a>"}]},
+            data: {
+              personalizations: [{ to: [{ email: email }], subject: "Reset" }],
+              from: { email: "no-reply@realestate.com" },
+              content: [
+                {
+                  type: "text/html",
+                  value:
+                    "<h1>You can reset your email and password by clicking the link below.</h1><br><a href='" +
+                    process.env.BASE_URL +
+                    "/accounts/reset/" +
+                    reset.id +
+                    "'>" +
+                    process.env.BASE_URL +
+                    "/accounts/reset/" +
+                    reset.id +
+                    "</a>",
+                },
+              ],
+            },
           });
-          return res.render("want-reset",{email});
-        }).catch((error) => console.log(error));
-    }).catch((error) => console.log(error));
+          return res.render("want-reset", { email });
+        })
+        .catch((error) => console.log(error));
+    })
+    .catch((error) => console.log(error));
 };
 
 exports.getResetPage = (req, res) => {
-  const {resetId} = req.params;
+  const { resetId } = req.params;
   Reset.findByPk(resetId)
-  .then((reset)=>{
-    if(reset===null) return res.render("reset",{resetId:null,emailError:"",passwordError:""});
-    return res.render("reset",{resetId,emailError:"",passwordError:""});
-  }).catch((error)=>console.log(error));
+    .then((reset) => {
+      if (reset === null)
+        return res.render("reset", {
+          resetId: null,
+          emailError: "",
+          passwordError: "",
+        });
+      return res.render("reset", {
+        resetId,
+        emailError: "",
+        passwordError: "",
+      });
+    })
+    .catch((error) => console.log(error));
 };
 
 exports.resetEmailAndPassword = (req, res) => {
-  const {resetId}=req.params;
-  const {oldEmail,newEmail,oldPassword,newPassword}=req.body;
+  const { resetId } = req.params;
+  const { oldEmail, newEmail, oldPassword, newPassword } = req.body;
 
-  Reset.findByPk(resetId,{include:User})
-  .then((reset)=>{
-    const {id,email,password} = reset.dataValues.User.dataValues;
-    var emailError="";
-    var passwordError="";
+  Reset.findByPk(resetId, { include: User })
+    .then((reset) => {
+      const { id, email, password } = reset.dataValues.User.dataValues;
+      var emailError = "";
+      var passwordError = "";
 
-    // Email Change
-    if(oldEmail && email === oldEmail){
-      User.update({email:newEmail},{where:{id}})
-      .then(()=>{
-        Reset.destroy({where:{id:resetId}}).catch((error)=>console.log(error));
-        return res.render("reset",{resetId,emailError:"Successfully changed",passwordError})
-      }).catch((error)=>{
-        emailError=error.errors[0].message;
-        return res.render("reset",{resetId,emailError,passwordError});
-      });
-    }else if(oldEmail !== undefined){
-      return res.render("reset",{resetId,emailError:"Old email doesn't match your current email.",passwordError});
-    }
-
-    // Password Change
-    oldPassword !== undefined && bcrypt.compare(oldPassword,password)
-    .then((same)=>{
-      if(!same) return res.render("reset",{resetId,emailError,passwordError:"Old password doesn't match your current password."});
-      
-      bcrypt.hash(newPassword,10).then((hashedPassword)=>{
-        User.update({password:hashedPassword},{where:{id}})
-        .then(()=>{
-          Reset.destroy({where:{id:resetId}}).catch((error)=>console.log(error));
-          return res.render("reset",{resetId,emailError,passwordError:"Successfully changed"})
-        }).catch((error)=>{
-          passwordError=error.errors[0].message;
-          return res.render("reset",{resetId,emailError,passwordError});
+      // Email Change
+      if (oldEmail && email === oldEmail) {
+        User.update({ email: newEmail }, { where: { id } })
+          .then(() => {
+            Reset.destroy({ where: { id: resetId } }).catch((error) =>
+              console.log(error)
+            );
+            return res.render("reset", {
+              resetId,
+              emailError: "Successfully changed",
+              passwordError,
+            });
+          })
+          .catch((error) => {
+            emailError = error.errors[0].message;
+            return res.render("reset", { resetId, emailError, passwordError });
+          });
+      } else if (oldEmail !== undefined) {
+        return res.render("reset", {
+          resetId,
+          emailError: "Old email doesn't match your current email.",
+          passwordError,
         });
-      });
-    });
-  }).catch((error)=>console.log(error));
+      }
+
+      // Password Change
+      oldPassword !== undefined &&
+        bcrypt.compare(oldPassword, password).then((same) => {
+          if (!same)
+            return res.render("reset", {
+              resetId,
+              emailError,
+              passwordError:
+                "Old password doesn't match your current password.",
+            });
+
+          bcrypt.hash(newPassword, 10).then((hashedPassword) => {
+            User.update({ password: hashedPassword }, { where: { id } })
+              .then(() => {
+                Reset.destroy({ where: { id: resetId } }).catch((error) =>
+                  console.log(error)
+                );
+                return res.render("reset", {
+                  resetId,
+                  emailError,
+                  passwordError: "Successfully changed",
+                });
+              })
+              .catch((error) => {
+                passwordError = error.errors[0].message;
+                return res.render("reset", {
+                  resetId,
+                  emailError,
+                  passwordError,
+                });
+              });
+          });
+        });
+    })
+    .catch((error) => console.log(error));
+};
+
+exports.getSellerPage = (req, res) => {
+  const { id } = req.params;
+  const sort = req.query.sort || "newest";
+
+  User.findByPk(id, { attributes: { exclude: ["password"] } })
+    .then((user) => {
+      const {
+        id,
+        fullName,
+        email,
+        phone,
+        type,
+        companyName,
+        companyAddress,
+        createdAt,
+      } = user.dataValues;
+      const sortBy =
+        sort === "newest" || "oldest"
+          ? sort === "newest"
+            ? ["updatedAt", "DESC"]
+            : ["updatedAt", "ASC"]
+          : sort === "highest"
+          ? ["price", "DESC"]
+          : ["price", "ASC"];
+      House.findAll({
+        where: { seller: id },
+        limit: 10,
+        order: [sortBy],
+        include: [City, District],
+      })
+        .then((houses) => {
+          return res.render("seller", {
+            id,
+            fullName,
+            email,
+            phone,
+            type,
+            companyName,
+            companyAddress,
+            createdAt,
+            houses,
+            sort,
+          });
+        })
+        .catch((error) => console.log(error));
+    })
+    .catch(() => res.redirect("back"));
 };
