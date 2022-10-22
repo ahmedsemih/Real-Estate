@@ -8,6 +8,7 @@ const House = require("../models/House");
 const { Op } = require("sequelize");
 const City = require("../models/City");
 const District = require("../models/District");
+const checkFavorite = require("../utils/checkFavorite");
 
 exports.getInfoPage = (req, res) => {
   const currentUser = req.signedCookies.currentUser;
@@ -285,6 +286,7 @@ exports.getSellerPage = (req, res) => {
     .then((user) => {
       const {
         id,
+        imageUrl,
         fullName,
         email,
         phone,
@@ -294,7 +296,7 @@ exports.getSellerPage = (req, res) => {
         createdAt,
       } = user.dataValues;
       const sortBy =
-        sort === "newest" || "oldest"
+        sort === "newest" || sort === "oldest"
           ? sort === "newest"
             ? ["updatedAt", "DESC"]
             : ["updatedAt", "ASC"]
@@ -303,22 +305,26 @@ exports.getSellerPage = (req, res) => {
           : ["price", "ASC"];
       House.findAll({
         where: { seller: id },
-        limit: 10,
         order: [sortBy],
         include: [City, District],
       })
         .then((houses) => {
-          return res.render("seller", {
-            id,
-            fullName,
-            email,
-            phone,
-            type,
-            companyName,
-            companyAddress,
-            createdAt,
-            houses,
-            sort,
+          const userId = req.signedCookies.currentUser;
+          checkFavorite(houses, userId).then((statusArray) => {
+            return res.render("seller", {
+              id,
+              fullName,
+              email,
+              phone,
+              type,
+              companyName,
+              companyAddress,
+              imageUrl,
+              createdAt,
+              houses,
+              sort,
+              statusArray,
+            });
           });
         })
         .catch((error) => console.log(error));
