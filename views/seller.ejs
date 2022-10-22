@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>
+    Real Estate | <%= type !=="Individual" && type !=="Administrator" ? companyName : fullName %>
+  </title>
+  <%- include('./layouts/imports.ejs') %>
+</head>
+
+<body>
+  <%- include('./layouts/navbar.ejs') %>
+
+    <div class="container-md">
+      <div class="row py-3 seller-page">
+        <!-- Seller Informations -->
+        <div
+          class="col-lg-3 col-md-4 shadow-sm d-flex flex-column px-3 pt-1 pb-5 text-center bg-white mb-3 seller-info">
+          <div class="image-area">
+            <img
+              src="<%= imageUrl ? imageUrl : 'https://res.cloudinary.com/dtzs4c2uv/image/upload/v1666326774/noavatar_rxbrbk.png' %>"
+              alt="user-photo" class="user-photo my-0" />
+          </div>
+          <p class="fs-3">
+            <%= type !=="Individual" && type !=="Administrator" ? companyName : fullName %>
+          </p>
+          <p class="fs-5 fw-light">
+            Join Date: <%= locals.moment(createdAt).format("DD.MM.YYYY") %>
+          </p>
+          <h4 class="border-bottom pb-1 mt-2">Contact</h4>
+          <p class="fs-5"><i class="fa-solid fa-phone"></i>
+            <%= phone %>
+          </p>
+          <p class="fs-5">
+            <%= email %>
+          </p>
+          <% if(companyAddress){ %>
+            <p class="fs-5">
+              <i class="fa-solid fa-location-dot"></i>
+              <%= companyAddress %>
+            </p>
+            %>
+            <a class="fs-6 license border-top pt-2" href="#">LICENSES</a>
+            <% } %>
+        </div>
+        <!-- Seller Informations End -->
+
+        <div class="col-lg-9 col-md-8">
+          <!-- Sort -->
+          <div class="shadow-sm bg-white p-2 d-flex justify-content-between mb-3">
+            <h5>
+              <b>
+                <%= type !=="Individual" && type !=="Administrator" ? companyName : fullName %>
+              </b>
+              has <%= houses.length %> listed house
+            </h5>
+            <div class="dropdown me-2">
+              <button class="btn btn-outline-danger px-4 sort-btn" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <%= sort %>
+                  <i class="fa-solid fa-caret-down ms-2"></i>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="/accounts/<%= id%>?sort=newest">Newest</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/accounts/<%= id%>?sort=oldest">Oldest</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/accounts/<%= id%>?sort=highest">Highest</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="/accounts/<%= id%>?sort=lowest">Lowest</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- Sort End -->
+
+          <!-- Listings -->
+          <div class="ads">
+            <% if(houses.length> 0){ %> 
+              <% houses.forEach((house,index)=>{ %>
+                <div class="ms-3">
+                  <div class="row px-2 bg-white shadow-sm my-3">
+                    <div class="col-lg-4 p-2 position-relative">
+                      <a href="/houses/<%= house.dataValues.id %>" class="col-lg-4">
+                        <img class="w-100 h-100" src="<%= house.dataValues.imageUrls[1] %>" alt="house-image" />
+                      </a>
+                      <a href="/houses/<%= house.dataValues.id %>/favorite">
+                        <button class="btn btn-outline-danger position-absolute favorite-btn">
+                      
+                      <% if(statusArray[index]){ %>
+                        <i class="fa-solid fa-heart"></i>
+                      <% }else{ %>
+                        <i class="fa-regular fa-heart"></i>
+                      <% } %> 
+                      </button>
+                      </a>
+                    </div>
+                    <div class="col-lg-8 p-2 lh-sm">
+                      <a href="/houses/<%= house.dataValues.id %>">
+                        <div class="d-flex justify-content-between pe-3">
+                          <p class="fs-4 fw-bold price">
+                            <%= house.dataValues.price %> TL
+                          </p>
+                          <p class="fs-5 text-muted">
+                            <%= moment(house.dataValues.updatedAt).format('DD.MM.YYYY') %>
+                          </p>
+                        </div>
+                        <p class="fs-5 fw-semibold">
+                          <%= house.dataValues.title %>
+                        </p>
+                        <p class="fs-5">
+                          <%= house.dataValues.type.toUpperCase() %> | <%= house.dataValues.rooms %> | <%=
+                                house.dataValues.grossSquareMeter %>m² | Age <%= house.dataValues.buildingAge%> | <%=
+                                    house.dataValues.floor %>. Floor
+                        </p>
+                      </a>
+                      <div class="d-flex justify-content-between">
+                        <a href="/houses/<%= house.dataValues.id %>" class="fs-6 text-muted w-75">
+                          <i class="fa-solid fa-location-dot"></i>
+                          <%= house.dataValues.District.dataValues.name %> / <%= house.dataValues.City.dataValues.name
+                              %>
+                        </a>
+                        <div class="text-end pe-2 d-flex align-items-center justify-content-end">
+                          <a class="fs-3" href="/accounts/<%= id %>">
+                            <img src="<%= imageUrl %>" alt="user-image" class="mini-image h-25" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% }) %>
+                  <% }else{ %>
+                    <div class="empty text-center bg-white shadow-sm py-5">
+                      <i class="fa-solid fa-house-circle-xmark big-icon text-danger mb-3"></i>
+                      <h1 class="my-3">You don't have a house posting yet.</h1>
+                      <a href="/houses/new">
+                        <button class="btn btn-danger mt-5 px-5">Add Now</button>
+                      </a>
+                    </div>
+                    <% } %>
+          </div>
+          <!-- Listings End -->
+        </div>
+      </div>
+    </div>
+
+    <%- include('./layouts/footer.ejs') %>
+</body>
+
+</html>

@@ -282,7 +282,7 @@ exports.getSellerPage = (req, res) => {
   const { id } = req.params;
   const sort = req.query.sort || "newest";
 
-  User.findByPk(id, { attributes: { exclude: ["password"] } })
+  User.findByPk( id, { attributes: { exclude: ["password"] } })
     .then((user) => {
       const {
         id,

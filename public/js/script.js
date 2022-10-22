@@ -14,6 +14,8 @@ function init() {
   const userImageInput = document.getElementById("userImage");
   const citySelection = document.getElementById("city");
   const districtSelection = document.getElementById("district");
+  const priceTexts=document.getElementsByClassName("price");
+  const favoriteBtns=document.getElementsByClassName("favorite-btn");
 
   // Copyright
   const currentDate = new Date();
@@ -106,4 +108,28 @@ function init() {
   userImageInput && userImageInput.addEventListener("change", () => {
     sendImage();
   });
+
+  // Adding dot after 3 digit
+  const numberWithDots=(number)=>{
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
+  };
+
+  for(let i=0;i<priceTexts.length;i++){
+    const price = priceTexts[i].innerText;
+    priceTexts[i].innerText=numberWithDots(price);
+  }
+
+  // Adding to favorite
+  for(let i=0;i<favoriteBtns.length;i++){
+    favoriteBtns[i].addEventListener("click",()=>{
+      let exist=favoriteBtns[i].innerHTML.includes('<i class="fa-solid fa-heart"></i>');
+      if(!exist){
+        favoriteBtns[i].innerHTML='<i class="fa-solid fa-heart"></i>';
+        exist=true;
+      }else{
+        favoriteBtns[i].innerHTML='<i class="fa-regular fa-heart"></i>';
+        exist=false
+      } 
+    });
+  }
 }
