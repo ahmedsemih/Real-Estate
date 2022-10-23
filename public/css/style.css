@@ -73,6 +73,9 @@ a:focus{
 .big-icon{
     font-size: 100px;
 }
+.content-area{
+    min-height: 470px;
+}
 
 /* USER INFO */
 .image-area{

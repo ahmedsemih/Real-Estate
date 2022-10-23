@@ -9,6 +9,7 @@ const { Op } = require("sequelize");
 const City = require("../models/City");
 const District = require("../models/District");
 const checkFavorite = require("../utils/checkFavorite");
+const Favorite = require("../models/Favorite");
 
 exports.getInfoPage = (req, res) => {
   const currentUser = req.signedCookies.currentUser;
@@ -330,4 +331,14 @@ exports.getSellerPage = (req, res) => {
         .catch((error) => console.log(error));
     })
     .catch(() => res.redirect("back"));
+};
+
+
+exports.getFavoritePage=(req,res)=>{
+  const {id}=req.params;
+  const page=req.query.page || 1;
+  Favorite.findAndCountAll({where:{UserId:id},include:[House,User,{model:House,include:[District,City]}],limit:10,offset:(page-1)*10})
+  .then((result)=>{
+    return res.render("favorites",{favorites:result.rows,count:result.count,page});
+  }).catch((error)=>console.log(error));
 };

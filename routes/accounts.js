@@ -9,11 +9,13 @@ const {
   getResetPage,
   resetEmailAndPassword,
   getSellerPage,
+  getFavoritePage
 } = require("../controllers/accounts");
 
 router.route("/infos").get(isAuthenticated, getInfoPage);
 router.route("/:id").get(getSellerPage);
 router.route("/:id").put(isAuthenticated,updateUser);
+router.route('/:id/favorites').get(isAuthenticated, getFavoritePage);
 
 // Email and password reset
 router.route("/want-reset/:email?").get(wantResetEmail);

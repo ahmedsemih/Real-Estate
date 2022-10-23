@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Estate | Favorites</title>
+  <%- include('./layouts/imports.ejs') %>
+</head>
+
+<body>
+  <%- include('./layouts/navbar.ejs') %>
+    <div class="container-md">
+
+      <!-- Top Bar -->
+      <div class="bg-white my-2 p-2 shadow-sm d-flex justify-content-between align-items-center">
+        <h6 class="mx-1 my-1 fs-2">Favorites</h6>
+        <p class="fs-3 my-1">You have <%= count %> favorites.</p>
+        <a href="/houses/favorites">
+          <button class="btn btn-outline-danger px-5">Clear All</button>
+        </a>
+      </div>
+      <!-- Top Bar End -->
+
+      <!-- Content -->
+      <div class="row content-area">
+        <% if(favorites.length> 0){ %>
+          <% favorites.forEach((favorite,index)=>{ %>
+
+            <!-- Favorite Card -->
+            <div class="col-md-6 m-0 p-0">
+              <div class="row bg-white shadow-sm my-3 mx-1">
+
+                <!-- Image Area -->
+                <div class="col-lg-4 p-2 position-relative">
+                  <a href="/houses/<%= favorite.dataValues.House.dataValues.id %>" class="col-lg-4">
+                    <img class="w-100 h-100" src="<%= favorite.dataValues.House.dataValues.imageUrls[1] %>"
+                      alt="house-image" />
+                  </a>
+                  <a href="/houses/<%= favorite.dataValues.House.dataValues.id %>/favorite">
+                    <button class="btn btn-outline-danger position-absolute favorite-btn">
+                      <i class="fa-solid fa-heart"></i>
+                    </button>
+                  </a>
+                </div>
+                <!-- Image Area End -->
+
+                <!-- Info Area -->
+                <div class="col-lg-8 p-2 lh-sm">
+                  <a href="/houses/<%= favorite.dataValues.House.dataValues.id %>">
+                    <div class="d-flex justify-content-between pe-3">
+                      <p class="fs-4 fw-bold price">
+                        <%= favorite.dataValues.House.dataValues.price %> TL
+                      </p>
+                      <p class="fs-5 text-muted">
+                        <%= moment(favorite.dataValues.House.dataValues.updatedAt).format('DD.MM.YYYY') %>
+                      </p>
+                    </div>
+                    <p class="fs-5 fw-semibold">
+                      <%= favorite.dataValues.House.dataValues.title %>
+                    </p>
+                    <p class="fs-5">
+                      <%= favorite.dataValues.House.dataValues.type.toUpperCase() %> | <%=
+                          favorite.dataValues.House.dataValues.rooms %> | <%=
+                            favorite.dataValues.House.dataValues.grossSquareMeter %>m² | Age <%=
+                              favorite.dataValues.House.dataValues.buildingAge%> | <%=
+                                favorite.dataValues.House.dataValues.floor %>. Floor
+                    </p>
+                  </a>
+                  <div class="d-flex justify-content-between">
+                    <a href="/houses/<%= favorite.dataValues.House.dataValues.id %>" class="fs-6 text-muted w-75">
+                      <i class="fa-solid fa-location-dot"></i>
+                      <%= favorite.dataValues.House.dataValues.District.dataValues.name %> / <%=
+                          favorite.dataValues.House.dataValues.City.dataValues.name %>
+                    </a>
+                    <div class="text-end pe-2 d-flex align-items-center justify-content-end">
+                      <a class="fs-3" href="/accounts/<%= favorite.dataValues.User.dataValues.id %>">
+                        <img src="<%= favorite.dataValues.User.dataValues.imageUrl %>" alt="user-image"
+                          class="mini-image h-25" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <!-- Info Area End -->
+
+              </div>
+            </div>
+            <!-- Favorite Card End -->
+
+            <!-- Pagination -->
+            <nav class="d-flex justify-content-center">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link <%= page===1 && 'disabled' %>"
+                    href="/accounts/<%= currentUser %>/favorites?page=<%= page - 1 %>">
+                    <span>&laquo;</span>
+                  </a>
+                </li>
+                <% for(let i=1; i<(count%10===0 ? count/10 : count/10 +1 );i++){ %>
+                  <li class="page-item"><a class="page-link <%= page === i && 'active' %> "
+                      href="/accounts/<%= currentUser %>/favorites?page=<%= i %>">1</a></li>
+                  <% } %>
+                    <li class="page-item">
+                      <a class="page-link <%= count%10 === 0 ? (page===count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
+                        href="/accounts/<%= currentUser %>/favorites?page=<%= page + 1 %>">
+                        <span>&raquo;</span>
+                      </a>
+                    </li>
+              </ul>
+            </nav>
+            <!-- Pagination End -->
+
+            <% }) %>
+            <% }else{ %>
+                <!-- Empty Message -->
+                <div class="empty text-center bg-white shadow-sm py-5 mt-2 mb-3">
+                  <i class="fa-solid fa-heart-circle-xmark text-danger big-icon mb-5"></i>
+                  <h1 class="my-2">You don't have any favorites yet.</h1>
+                  <p class="fs-5 text-muted">You can add new favorites by clicking the heart button on the house photo.
+                  </p>
+                  <a href="/sale">
+                    <button class="btn btn-danger mt-5 px-5">Now Discover</button>
+                  </a>
+                </div>
+                <!-- Empty Message End -->
+              <% } %>
+      </div>
+      <!-- Content End -->
+
+    </div>
+    <%- include('./layouts/footer.ejs') %>
+</body>
+
+</html>

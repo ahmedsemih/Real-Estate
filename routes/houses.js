@@ -9,12 +9,14 @@ const {
   addHouse,
   updateHouse,
   deleteHouse,
-  toggleFavorite
+  toggleFavorite,
+  deleteFavorites
 } = require("../controllers/houses");
 
 router.route("/").post(isAuthenticated, addHouse);
 router.route("/new").get(isAuthenticated, getAddPage);
 router.route("/edit").get(isAuthenticated, getEditPage);
+router.route("/favorites").get(isAuthenticated,deleteFavorites);
 
 router.route("/:id").get(getHouseById);
 router.route("/:id").put(isAuthenticated, updateHouse);

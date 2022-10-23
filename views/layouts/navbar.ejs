@@ -15,12 +15,12 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="/accounts/infos">Informations</a></li>
-                      <li><a class="dropdown-item" href="/accounts/favorites">Favorites</a></li>
+                      <li><a class="dropdown-item" href="/accounts/<%= currentUser %>/favorites">Favorites</a></li>
                       <li><a class="dropdown-item d-none d-md-block d-lg-none" href="/houses/new">Post New House</a></li>
-                      <li><a class="dropdown-item" href="/accounts/<%= locals.currentUser %>">Posted Houses</a></li>
+                      <li><a class="dropdown-item" href="/accounts/<%= currentUser %>">Posted Houses</a></li>
                       <li class="border-top"><a class="dropdown-item" href="/auth/logout">Logout</a></li>
                     </ul>
-                  </div>
+                </div>
             <% }else{ %>
                 <a href="/auth/signup" class="btn btn-danger me-2">Sign Up</a>
             <% } %>

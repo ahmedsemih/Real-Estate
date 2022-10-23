@@ -136,17 +136,29 @@ exports.deleteHouse = (req, res) => {};
 
 exports.toggleFavorite = (req, res) => {
   const { id } = req.params;
-  const userId = req.signedCookies.currentUser;
-  Favorite.findOrCreate({
-    where: { UserId: userId, HouseId: id },
-    defaults: { UserId: userId, HouseId: id },
+  const UserId = req.signedCookies.currentUser;
+  Favorite.findOne({
+    where: { UserId, HouseId: id }
   })
-    .then((favorite,created) => {
-      if(created) return res.redirect("back");
+    .then((favorite) => {
+      if(favorite === null){
+        Favorite.create({UserId,HouseId:id})
+        .then(()=>{
+          return res.redirect("back");
+        }).catch((error)=>console.log(error));
+      }
       
-      Favorite.destroy({where:{id:favorite[0].dataValues.id}}).then(()=>{
-        res.redirect("back");
+      Favorite.destroy({where:{id:favorite.dataValues.id}}).then(()=>{
+        return res.redirect("back");
       }).catch((error)=>console.log(error));
     })
     .catch((error) => console.log(error));
+};
+
+exports.deleteFavorites=(req,res)=>{
+  const UserId = req.signedCookies.currentUser;
+  Favorite.destroy({where:{UserId}})
+  .then(()=>{
+    return res.redirect("back");
+  }).catch((error)=>console.log(error));
 };
