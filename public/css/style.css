@@ -76,6 +76,25 @@ a:focus{
 .content-area{
     min-height: 470px;
 }
+.house-image{
+    max-height: 205px;
+}
+
+.house-card{
+    max-width: 1000px;
+}
+
+.card{
+    margin: 0 .5em;
+    box-shadow: 2px 3px 8px 0 rgba(22, 22, 26, 0.18);
+    border: none;
+}
+
+/* EDIT PAGE */
+.carousel img{
+    height: 500px;
+    object-fit: contain;
+}
 
 /* USER INFO */
 .image-area{
@@ -238,6 +257,12 @@ input::-webkit-inner-spin-button {
     }
     .reset-div{
         margin: 24px 0px;
+    }
+}
+
+@media screen and (max-width:991px){
+    .house-image{
+        max-height: 250px;
     }
 }
 
