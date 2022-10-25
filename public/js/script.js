@@ -61,7 +61,6 @@ function init() {
       })
         .then((res) => res.json())
         .then((data) => {
-          if (i === images.length - 1) return (urlInput.innerText += data.url);
           urlInput.innerText += data.url + " ";
         });
     }

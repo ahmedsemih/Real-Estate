@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Real Estate | Edit</title>
+  <%- include('./layouts/imports.ejs') %>
+</head>
+
+<body>
+  <%- include('./layouts/navbar.ejs') %>
+    <div class="container-md shadow-sm py-3 bg-white">
+      <h1 class="py-3 border-bottom fs-2">Edit House Posting</h1>
+      <% if(result){ %>
+        <div class="alert <%= result === 'success' ? 'alert-success' : 'alert-danger' %>">
+          <%= result==="success" ? "House posting successfully updated." : "Somethings went wrong." %>
+        </div>
+        <% } %>
+
+          <!-- House Posting Form -->
+          <form action="/houses/<%= house.id %>?_method=PUT" method="POST">
+            <div class="row">
+              <div class="col-sm-6 col-lg-4">
+
+                <!-- Hidden User ID -->
+                <input type="text" name="seller" hidden value="<%= currentUser %>" />
+                <!-- Hidden User ID End -->
+
+                <!-- Title -->
+                <div class="my-2">
+                  <label for="title">Title</label>
+                  <input maxlength="100" type="text" name="title" class="form-control" placeholder="Title"
+                    value="<%= house.title %>" required />
+                  <% if(titleError){ %>
+                    <p class="text-danger">
+                      <%= titleError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Title End -->
+
+                <!-- Description -->
+                <div class="my-2">
+                  <label for="description">Description</label>
+                  <textarea type="text" name="description" class="form-control" placeholder="Description"
+                    required><%= house.description %></textarea>
+                  <% if(descriptionError){ %>
+                    <p class="text-danger">
+                      <%= descriptionError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Description End -->
+
+                <!-- Address -->
+                <div class="my-2">
+                  <label for="address">Address</label>
+                  <textarea type="text" name="address" class="form-control" placeholder="Address"
+                    required><%= house.address %></textarea>
+                  <% if(addressError){ %>
+                    <p class="text-danger">
+                      <%= addressError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Address End -->
+
+              </div>
+              <div class="col-sm-6 col-lg-4">
+
+                <!-- City -->
+                <div class="my-2">
+                  <label for="city">City</label>
+                  <select name="city" id="city" class="form-control" required>
+                    <% cities.forEach((city)=>{ %>
+                      <option <%=house.CityId===city.dataValues.id && 'selected' %> value="<%= city.dataValues.id %>">
+                          <%= city.dataValues.name %>
+                      </option>
+                      <% }) %>
+                  </select>
+                  <% if(cityError){ %>
+                    <p class="text-danger">
+                      <%= cityError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- City End -->
+
+                <!-- District -->
+                <div class="my-2">
+                  <label for="district">District</label>
+                  <select name="district" id="district" class="form-control district" required>
+                    <% districts.forEach((district)=>{ %>
+                      <option <%=house.DistrictId===district.dataValues.id && 'selected' %> class="<%=
+                          district.dataValues.CityId %>" value="<%= district.dataValues.id %>">
+                            <%= district.dataValues.name %>
+                      </option>
+                      <% }) %>
+                  </select>
+                  <% if(districtError){ %>
+                    <p class="text-danger">
+                      <%= districtError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- District End -->
+
+                <!-- Gross Square Meter -->
+                <div class="my-2">
+                  <label for="grossSquareMeter">Gross m²</label>
+                  <div class="input-group">
+                    <input name="grossSquareMeter" type="number" max="99999" min="10" class="form-control" placeholder="Gross m²"
+                      value="<%= house.grossSquareMeter %>" required />
+                    <span class="input-group-text">m²</span>
+                  </div>
+                  <% if(grossSquareMeterError){ %>
+                    <p class="text-danger">
+                      <%= grossSquareMeterError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Gross Square Meter End -->
+
+                <!-- Images -->
+                <textarea id="imageUrls" hidden name="img"></textarea>
+                <div class="my-2">
+                  <label for="images">Images</label>
+                  <div class="input-group">
+                    <input type="file" class="form-control" accept="image/*" id="images" multiple />
+                    <label class="input-group-text" for="images">Upload</label>
+                  </div>
+                </div>
+                <!-- Images End -->
+
+                <!-- Price -->
+                <div class="my-2">
+                  <label for="price">Price</label>
+                  <div class="input-group">
+                    <input name="price" type="number" min="1" max="99999999" class="form-control" placeholder="Price"
+                      value="<%= house.price %>" required />
+                    <span class="input-group-text">TL</span>
+                  </div>
+                  <% if(priceError){ %>
+                    <p class="text-danger">
+                      <%= priceError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Price End -->
+              </div>
+              <div class="col-sm-6 col-lg-4">
+                <!-- Type -->
+                <div class="my-2">
+                  <label for="type">Type</label>
+                  <select name="type" class="form-control" required>
+                    <option <%=house.type==='rent' && 'selected' %> value="rent">Rent</option>
+                    <option <%=house.type==='sale' && 'selected' %> value="sale">Sale</option>
+                  </select>
+                  <% if(typeError){ %>
+                    <p class="text-danger">
+                      <%= typeError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Type End -->
+
+                <!-- Rooms -->
+                <div class="my-2">
+                  <label for="rooms">Room</label>
+                  <select name="rooms" class="form-control" required>
+                    <option <%=house.rooms==='1+0' && 'selected' %> value="1+0">1+0</option>
+                    <option <%=house.rooms==='1+1' && 'selected' %> value="1+1">1+1</option>
+                    <option <%=house.rooms==='2+1' && 'selected' %> value="2+1">2+1</option>
+                    <option <%=house.rooms==='3+1' && 'selected' %> value="3+1">3+1</option>
+                    <option <%=house.rooms==='4+1' && 'selected' %> value="4+1">4+1</option>
+                    <option <%=house.rooms==='4+2' && 'selected' %> value="4+2">4+2 and above</option>
+                  </select>
+                  <% if(roomsError){ %>
+                    <p class="text-danger">
+                      <%= roomsError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Rooms End -->
+
+                <!-- Bathooms -->
+                <div class="my-2">
+                  <label for="bathrooms">Bathrooms</label>
+                  <select name="bathrooms" class="form-control" required>
+                    <% for( let i=0 ; i < 6 ; i++){ %>
+                      <option <%=house.bathrooms===i && 'selected' %> value="<%= i %>"><%= i===5 ? '5 and above' : i %>
+                      </option>
+                      <% } %>
+                  </select>
+                  <% if(bathroomsError){ %>
+                    <p class="text-danger">
+                      <%= bathroomsError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Bathrooms End -->
+
+                <!-- Building Age -->
+                <div class="my-2">
+                  <label for="buildingAge">Building Age</label>
+                  <input value="<%= house.buildingAge %>" class="form-control" type="number" name="buildingAge"
+                    placeholder="Building Age">
+                  <% if(buildingAgeError){ %>
+                    <p class="text-danger">
+                      <%= buildingAgeError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Building Age End -->
+
+                <!-- Floor -->
+                <div class="my-2">
+                  <label for="floor">Floor</label>
+                  <input value="<%= house.floor %>" class="form-control" type="number" name="floor"
+                    placeholder="Floor of The Flat">
+                  <% if(floorError){ %>
+                    <p class="text-danger">
+                      <%= floorError %>
+                    </p>
+                    <% } %>
+                </div>
+                <!-- Floor End -->
+              </div>
+
+              <!-- Location Features -->
+              <div class="col-sm-6 col-lg-4">
+                <p class="fs-5 mt-2">Location Features</p>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" name="isInHousingEstate" type="checkbox" value="true"
+                      <%=house.isInHousingEstate && 'checked' %>
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Is the house in housing estate?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" name="isInTheCenter" <%=house.isInTheCenter && 'checked' %>
+                    type="checkbox"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Is the house in the center?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.closeToPublicTransportation
+                      && 'checked' %>
+                    name="closeToPublicTransportation"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control"
+                    value="Is the house close to public transportations?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" name="closeToHospital" <%=house.closeToHospital
+                      && 'checked' %>
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Is the house close to hospital?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.closeToShops && 'checked' %>
+                    name="closeToShops"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Is the house close to shops?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.closeToSchool && 'checked' %>
+                    name="closeToSchool"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Is the house close to school?" />
+                </div>
+              </div>
+              <!-- Location Features End -->
+
+              <!-- External Features -->
+              <div class="col-sm-6 col-lg-4">
+                <p class="fs-5 mt-2">External Features</p>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" name="hasElevator" <%=house.hasElevator
+                      && 'checked' %>
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have an elevator?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasYard && 'checked' %>
+                    name="hasYard"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have a yard?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasGenerator && 'checked' %>
+                    name="hasGenerator"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have a generator?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasThermalInsulation && 'checked' %>
+                    name="hasThermalInsulation"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have a thermal insulation?" />
+                </div>
+              </div>
+              <!-- External Features End -->
+
+              <!-- Internal Features -->
+              <div class="col-sm-6 col-lg-4">
+                <p class="fs-5 mt-2">Internal Features</p>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasBalcony && 'checked' %>
+                    name="hasBalcony"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have a balcony?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasParquet && 'checked' %>
+                    name="hasParquet"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have parquet?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasNaturalGas && 'checked' %>
+                    name="hasNaturalGas"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have natural gas?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasSteelDoor && 'checked' %>
+                    name="hasSteelDoor"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Does the house have a steel door?" />
+                </div>
+                <div class="input-group my-2">
+                  <div class="input-group-text">
+                    <input class="form-check-input mt-0" type="checkbox" <%=house.hasFurnish && 'checked' %>
+                    name="hasFurnish"
+                    value="true"
+                    />
+                  </div>
+                  <input type="text" readonly class="form-control" value="Is the house furnished?" />
+                </div>
+              </div>
+              <!-- Internal Features End -->
+
+            </div>
+            <div class="d-flex justify-content-end my-3 px-2">
+              <button type="submit" class="btn btn-danger px-5 me-3">Save</button>
+              <a href="/houses/<%= house.id %>/destroy">
+                <button type="button" class="btn btn-outline-danger px-4">
+                  Delete House
+                </button>
+              </a>
+            </div>
+          </form>
+          <!-- House Posting Form End -->
+
+    </div>
+    <%- include('./layouts/footer.ejs') %>
+</body>
+
+</html>
