@@ -8,6 +8,7 @@ const searchRoutes = require("./routes/searches");
 const authRoutes = require("./routes/auths");
 const accountRoutes = require("./routes/accounts");
 const houseRoutes = require("./routes/houses");
+const reportRoutes = require("./routes/reports");
 const addToLocals = require("./middlewares/addToLocals");
 
 const app = express();
@@ -31,6 +32,7 @@ app.use("/", searchRoutes);
 app.use("/auth", authRoutes);
 app.use("/accounts", accountRoutes);
 app.use("/houses", houseRoutes);
+app.use("/reports", reportRoutes);
 
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
