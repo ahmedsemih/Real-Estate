@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate | <%= house.title %>
+    </title>
+    <%- include ('./layouts/imports.ejs') %>
+</head>
+
+<body>
+    <%- include ('./layouts/navbar.ejs') %>
+        <div class="container-md">
+
+            <!-- Carousel -->
+            <div id="carousel" class="carousel slide carousel-dark" data-bs-ride="true">
+                <div class="carousel-inner">
+                    <% house.imageUrls.forEach((url,index)=>{ %>
+                        <div class="carousel-item <%= index === 0 && 'active' %>">
+                            <img src="<%= url %>" class="d-block w-100" alt="house-image">
+                        </div>
+                    <% }) %>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <!-- Carousel End -->
+
+            <div class="bg-white px-3 shadow-sm my-3 pb-3">
+                <div class="row">
+
+                    <!-- House Info -->
+                    <div class="col-md-8 col-lg-9 py-5">
+
+                        <!-- Title -->
+                        <div class="d-flex justify-content-between flex-column flex-md-row">
+                            <h1>
+                                <%= house.title %>
+                            </h1>
+                            <div class="d-flex">
+                            <a href="/houses/<%= house.id %>/favorite" class="btn btn-outline-danger d-flex align-items-center px-4 me-2">
+                                <% if(fav[0]){ %>
+                                    <i class="fa-solid fa-heart"></i>
+                                <% }else{ %>
+                                    <i class="fa-regular fa-heart"></i>
+                                <% } %>
+                            </a>
+                            <a href="/reports/<%= house.id %>/add" class="btn btn-outline-danger d-flex align-items-center px-4">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </a>
+                            </div>
+                        </div>
+                        <!-- Title End -->
+
+                        <!-- Base Info -->
+                        <p class="fs-4 my-3">
+                            <span class="pe-3 border-end">
+                                <%= house.City.dataValues.name %>
+                            </span>
+                            <span class="px-3 border-end">
+                                <%= house.District.dataValues.name %>
+                            </span>
+                            <span class="px-3 border-end">
+                                <%= house.grossSquareMeter %>
+                            </span>
+                            <span class="px-3 border-end">
+                                <%= house.rooms %>
+                            </span>
+                            <span class="px-3 border-end">
+                                <%= house.floor %>. Floor
+                            </span>
+                            <span class="ps-3">Age <%= house.buildingAge %></span>
+                        </p>
+                        <!-- Base Info End -->
+
+                        <!-- House Table Info -->
+                        <h2 class="fs-4 pb-2 mt-5">House Informations</h2>
+
+                        <div class="d-flex flex-column flex-md-row mb-3">
+                            <table class="table table-borderless pe-3">
+                                <tbody>
+                                    <tr>
+                                        <td class="w-25">Id</td>
+                                        <th>
+                                            <%= house.id %>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Last Update</td>
+                                        <th>
+                                            <%= moment(house.updatedAt).format("DD.MM.YYYY") %>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Price</td>
+                                        <th class="price">
+                                            <%= house.price %> TL
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Seller</td>
+                                        <th>
+                                            <a href="/accounts/<%= house.User.dataValues.id %>">
+                                            <%= house.User.dataValues.type !== 'Individual' && house.User.dataValues.type !== 'Administrator' ? house.User.dataValues.companyName : house.User.dataValues.fullName %>
+                                            </a>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Type</td>
+                                        <th class="text-capitalize">
+                                            <%= house.type %>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td class="w-25">Gross m²</td>
+                                        <th>
+                                            <%= house.grossSquareMeter %> m²
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Rooms</td>
+                                        <th>
+                                            <%= house.rooms %>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Bathrooms</td>
+                                        <th>
+                                            <%= house.bathrooms %>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Building Age</td>
+                                        <th>
+                                            <%= house.buildingAge %>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <td class="w-25">Floor</td>
+                                        <th>
+                                            <%= house.floor %>
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- House Table Info End -->
+
+                        <!-- Description -->
+                        <div class="my-3">
+                            <h2 class="fs-4 mb-2">Description</h2>
+                            <p><%= house.description %></p>
+                        </div>
+                        <!-- Description End -->
+
+                        <!-- Features -->
+                        <div class="mt-5 row">
+
+                            <!-- Location -->
+                            <div class="col-md-4 col-sm-6 py-2">
+                                <h3 class="fs-4 pb-1">Location</h3>
+                                <% if(house.isInHousingEstate){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> In the housing estate </p>
+                                <% } %>
+                                <% if(house.isInCenter){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> In the center </p>
+                                <% } %>
+                                <% if(house.closeToPublicTransportation){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Close to public transportation </p>
+                                <% } %>
+                                <% if(house.closeToHospital){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Close to hospital </p>
+                                <% } %>
+                                <% if(house.closeToShops){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Close to shops </p>
+                                <% } %>
+                                <% if(house.closeToSchool){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Close to school </p>
+                                <% } %>  
+                            </div>
+                            <!-- Location End -->
+                                
+                            <!-- External -->
+                            <div class="col-md-4 col-sm-6 py-2">
+                                <h3 class="fs-4 pb-1">External Features</h3>
+                                <% if(house.hasElevator){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Elevator </p>
+                                <% } %>
+                                <% if(house.hasYard){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Yard </p>
+                                <% } %>
+                                <% if(house.hasThermalInsulation){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Thermal Insulation </p>
+                                <% } %>
+                                <% if(house.hasGenerator){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Generator </p>
+                                <% } %>                           
+                            </div>
+                            <!-- External End -->
+
+                            <!-- Internal -->
+                            <div class="col-md-4 col-sm-6 py-2">
+                                <h3 class="fs-4 pb-1">Internal Features</h3>
+                                <% if(house.hasBalcony){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Balcony </p>
+                                <% } %>
+                                <% if(house.hasParquet){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Parquet </p>
+                                <% } %>
+                                <% if(house.hasNaturalGas){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Natural Gas </p>
+                                <% } %>
+                                <% if(house.hasSteelDoor){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Steel Door </p>
+                                <% } %>
+                                <% if(house.hasFurnish){ %>
+                                    <p><i class="fa-solid fa-check pe-2"></i> Furnished </p>
+                                <% } %>   
+                            </div>
+                            <!-- Internal End -->
+                        </div>
+                        <!-- Features End -->
+
+                    </div>
+                    <!-- House Info End -->
+
+                    <!-- Seller Info -->
+                    <div
+                        class="col-md-4 col-lg-3 d-md-flex flex-column align-items-center d-none text-center border-start">
+                        <div class="image-area p-0">
+                            <a href="/accounts/<%= house.User.dataValues.id %>">
+                                <img src="<%= house.User.dataValues.imageUrl ? house.User.dataValues.imageUrl : 'https://res.cloudinary.com/dtzs4c2uv/image/upload/v1666326774/noavatar_rxbrbk.png' %>"
+                                    alt="user-photo" class="user-photo my-0" />
+                        </div>
+                        <p class="fs-3">
+                            <%= house.User.dataValues.type !=="Individual" && house.User.dataValues.type
+                                !=="Administrator" ? house.User.dataValues.companyName : house.User.dataValues.fullName
+                                %>
+                        </p>
+                        <p class="fs-5 fw-light">
+                            Join Date: <%= locals.moment(house.User.dataValues.createdAt).format("DD.MM.YYYY") %>
+                        </p>
+                        <h4 class="border-bottom pb-1 mt-2">Contact</h4>
+                        <p class="fs-5"><i class="fa-solid fa-phone"></i>
+                            <%= house.User.dataValues.phone %>
+                        </p>
+                        <p class="fs-5">
+                            <%= house.User.dataValues.email %>
+                        </p>
+                        </a>
+                    </div>
+                    <!-- Seller Info End -->
+
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+        <%- include ('./layouts/footer.ejs') %>
+</body>
+
+</html>

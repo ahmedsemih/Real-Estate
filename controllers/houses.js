@@ -4,6 +4,8 @@ const House = require("../models/House");
 const City = require("../models/City");
 const District = require("../models/District");
 const Favorite = require("../models/Favorite");
+const User = require("../models/User");
+const checkFavourite=require('../utils/checkFavorite');
 
 const defaultErrors = {
   titleError: "",
@@ -22,7 +24,19 @@ const defaultErrors = {
 };
 
 // Pages
-exports.getHouseById = (req, res) => {};
+exports.getHouseById = (req, res) => {
+  const { id } = req.params;
+  const currentUser = req.signedCookies.currentUser || null;
+
+  House.findByPk(id,{include:[City,District,User]})
+    .then((house) => {
+      const { dataValues } = house;
+      checkFavourite([house],currentUser).then((fav)=>{
+        return res.render("house", { house: dataValues,fav });
+      });
+    })
+    .catch((error) => console.log(error));
+};
 
 exports.getEditPage = (req, res) => {
   const { id } = req.params;
@@ -183,7 +197,7 @@ exports.updateHouse = (req, res) => {
               UserId: seller,
               DistrictId: district,
             },
-            { where: { id }}
+            { where: { id } }
           )
             .then(() => {
               return res.render("edit", {
@@ -242,13 +256,13 @@ exports.updateHouse = (req, res) => {
                   }
                 });
 
-                return res.render("edit", {
-                  ...defaultErrors,
-                  result,
-                  cities,
-                  districts,
-                  house: dataValues,
-                });
+              return res.render("edit", {
+                ...defaultErrors,
+                result,
+                cities,
+                districts,
+                house: dataValues,
+              });
             });
         });
       });

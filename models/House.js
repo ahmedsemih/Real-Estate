@@ -72,24 +72,12 @@ const House = sequelize.define("House", {
     allowNull: false,
   },
   buildingAge: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.INTEGER,
     allowNull: false,
-    validate:{
-      notContains:{
-        args:"Building Age",
-        msg:"Please select how old your house."
-      }      
-    }
   },
   floor: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.INTEGER,
     allowNull: false,
-    validate:{
-      notContains:{
-        args:"Floor",
-        msg:"Please choose which floor your flat is on."
-      }
-    }
   },
   isInHousingEstate: {
     type: DataTypes.BOOLEAN,
