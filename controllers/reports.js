@@ -19,7 +19,7 @@ exports.addReport = (req, res) => {
 exports.deleteReport = (req, res) => {
   const { id } = req.params;
 
-  Report.destroy({ where: { HouseId: id } })
+  Report.destroy({ where: { id } })
     .then(() => {
       return res.redirect("back");
     })

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate | Admin</title>
+    <%- include('./layouts/imports.ejs') %>
+</head>
+
+<body>
+    <%- include('./layouts/navbar.ejs') %>
+        <div class="container-md my-5 bg-white shadow-sm py-5">
+
+            <div class="d-flex flex-column">
+                <h1 class="fs-2 text-center text-md-start">Admin Panel</h1>
+                <!-- Ban Panel -->
+                <div class="d-flex flex-column flex-md-row my-3">
+
+                    <!-- User -->
+                    <form action="/admin/ban?_method=PUT" method="POST" class="input-group mb-3 me-4">
+                        <span class="input-group-text bg-danger text-white">
+                            <i class="fa-solid fa-user-slash"></i>
+                        </span>
+                        <div class="form-floating">
+                            <input type="email" class="form-control" name="email" placeholder="User Email" required />
+                            <label for="email">User Email</label>
+                        </div>
+                        <button class="btn btn-danger px-4" type="submit">Ban</button>
+                    </form>
+                    <!-- User End -->
+
+                    <!-- House -->
+                    <form action="/admin/house?_method=DELETE" method="POST" class="input-group mb-3">
+                        <span class="input-group-text bg-danger text-white">
+                            <i class="fa-solid fa-house-circle-xmark"></i>
+                        </span>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="id" placeholder="House Posting Id" required />
+                            <label for="id">House Posting Id</label>
+                        </div>
+                        <button class="btn btn-danger px-3" type="submit">Delete</button>
+                    </form>
+                    <!-- House End -->
+
+                </div>
+                <!-- Ban Panel End -->
+
+                <!-- Reports -->
+                <h1 class="fs-2 my-3 text-center text-md-start">Reports</h1>
+                <% if(report){ %>
+
+                    <!-- Report -->
+                    <div class="row">
+                        <div
+                            class="border-end col-lg-4 col-md-6 col-sm-6 d-flex flex-column align-items-center align-items-sm-start">
+                            <p class="fs-5 pt-3 pb-2">Date : <b>
+                                    <%= moment(report.createdAt).format("DD.MM.YYYY - h:m A") %>
+                                </b></p>
+                            <p class="fs-5 py-3">House Id : <b class="fs-6">
+                                    <%= report.House.dataValues.id %>
+                                </b></p>
+                        </div>
+                        <div
+                            class="border-end col-lg-4 col-md-6 col-sm-6 ps-md-5 d-flex align-items-center align-items-lg-start flex-column">
+                            <p class="fs-5 pt-3 pb-2">Seller : <b>
+                                    <%= report.House.dataValues.User.dataValues.type !=="Individual" ?
+                                        report.House.dataValues.User.dataValues.companyName :
+                                        report.House.dataValues.User.dataValues.fullName %>
+                                </b> </p>
+                            <p class="fs-5 py-3">Email : <b>
+                                    <%= report.House.dataValues.User.dataValues.email %>
+                                </b></p>
+                        </div>
+                        <div class="py-3 col-lg-4">
+                            <div>
+                                <p class="fs-3 text-danger text-center">* Scam Suspicion *</p>
+                            </div>
+                            <div class="mt-3 d-flex justify-content-center">
+                                <a href="/houses/<%= report.House.dataValues.id  %>"><button
+                                        class="btn btn-danger me-4">House <i
+                                            class="fa-solid fa-magnifying-glass ms-2"></i></button></a>
+                                <a href="/accounts/<%= report.House.dataValues.User.dataValues.id %>"><button
+                                        class="btn btn-outline-danger me-4">Seller <i
+                                            class="fa-solid fa-magnifying-glass ms-2"></i></button></a>
+                                <a href="/reports/<%= report.id %>/delete"><button class="btn btn-success px-3">Done <i
+                                            class="fa-solid fa-check ms-2"></i></button></a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Report End -->
+
+                    <% }else{ %>
+
+                        <!-- Empty Message -->
+                        <div class="text-center py-4">
+                            <i class="fa-solid fa-circle-exclamation text-danger big-icon mb-3"></i>
+                            <h1 class="my-2">All reports are completed.</h1>
+                        </div>
+                        <!-- Empty Message End -->
+
+                    <% } %>
+
+                <!-- Reports End -->
+
+            </div>
+        </div>
+        <%- include('./layouts/footer.ejs') %>
+</body>
+
+</html>
