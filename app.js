@@ -35,6 +35,9 @@ app.use("/accounts", accountRoutes);
 app.use("/houses", houseRoutes);
 app.use("/reports", reportRoutes);
 app.use("/admin",adminRoutes);
+app.get("*",(req,res)=>{
+  res.render("notfound");
+});
 
 app.listen(PORT, () => {
   console.log(`App is running on port ${PORT}`);
