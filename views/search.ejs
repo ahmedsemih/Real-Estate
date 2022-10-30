@@ -1,34 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('./layouts/imports') %>
+
+<head>
+  <%- include('./layouts/imports') %>
     <title>Real Estate</title>
-  </head>
-  <body>
-    <%- include('./layouts/navbar.ejs') %>
+</head>
+
+<body>
+  <%- include('./layouts/navbar.ejs') %>
     <div class="container-md">
       <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-5 border my-3 px-3 py-2">
+        <div id="filter-menu" class="col-lg-3 col-md-4 col-sm-5 my-3 px-3 py-2 bg-white shadow-sm d-none d-sm-block">
+
           <!-- Sale or Rent -->
           <nav class="nav nav-tabs nav-fill">
-            <a class="nav-link text-dark me-1" href="/sale">Sale</a>
-            <a class="nav-link active" href="/rent">Rent</a>
+            <a id="saleBtn" class="nav-link me-1 text-dark" href="/sale">Sale</a>
+            <a id="rentBtn" class="nav-link text-dark" href="/rent">Rent</a>
           </nav>
           <!-- Sale or Rent End -->
 
-          <form action="" method="GET">
+          <form action="/<%= path %>" method="GET">
+
             <!-- Location -->
             <div class="address my-3">
               <h5>Location</h5>
-              <select class="form-select">
-                <option selected disabled value="izmir">Select a City</option>
-                <option value="izmir">Izmir</option>
+              <select class="form-select city" id="city" name="city">
+                <option hidden value="404">All Cities</option>
+                <% cities.forEach((city)=>{ %>
+                  <option <%=filters.city==city.dataValues.id && 'selected' %> class="<%= city.dataValues.id %>" value="
+                      <%= city.dataValues.id %>">
+                        <%= city.dataValues.name %>
+                  </option>
+                  <% }) %>
               </select>
-              <select class="form-select my-2">
-                <option selected disabled value="izmir">
-                  Select a District
+              <select class="form-select my-2 district" id="district" name="district">
+                <option hidden value="404">
+                  All Districts
                 </option>
-                <option value="bornova">Bornova</option>
+                <% districts.forEach((district)=>{ %>
+                  <option <%=filters.district==district.dataValues.id && 'selected' %> class="<%=
+                      district.dataValues.CityId %>"
+                      value="<%= district.dataValues.id %>">
+                        <%= district.dataValues.name %>
+                  </option>
+                  <% }) %>
               </select>
             </div>
             <!-- Location End -->
@@ -37,20 +52,10 @@
             <div class="my-3">
               <h5>Price</h5>
               <div class="d-flex align-items-center">
-                <input
-                  class="form-control w-50 me-2"
-                  max="100000000"
-                  type="number"
-                  name="lowestprice"
-                  placeholder="Lowest"
-                />TL
-                <input
-                  class="form-control w-50 mx-2"
-                  max="100000000"
-                  type="number"
-                  name="highestprice"
-                  placeholder="Highest"
-                />TL
+                <input class="form-control w-50 me-2" max="999999999" type="number" name="lowestprice"
+                  value="<%= filters.lowestprice %>" placeholder="Lowest" />TL
+                <input class="form-control w-50 mx-2" max="999999999" type="number" name="highestprice"
+                  value="<%= filters.highestprice %>" placeholder="Highest" />TL
               </div>
             </div>
             <!-- Price End -->
@@ -59,91 +64,58 @@
             <div class="my-3">
               <h5>Gross m²</h5>
               <div class="d-flex align-items-center">
-                <input
-                  class="form-control w-50 me-2"
-                  max="100000000"
-                  type="number"
-                  name="lowestmeter"
-                  placeholder="Lowest"
-                />m²
-                <input
-                  class="form-control w-50 mx-2"
-                  max="100000000"
-                  type="number"
-                  name="highestmeter"
-                  placeholder="Highest"
-                />m²
+                <input class="form-control w-50 me-2" max="99999" type="number" name="lowestmeter"
+                  value="<%= filters.lowestmeter %>" placeholder="Lowest" />m²
+                <input class="form-control w-50 mx-2" max="99999" type="number" name="highestmeter"
+                  value="<%= filters.highestmeter %>" placeholder="Highest" />m²
               </div>
             </div>
             <!-- Gross m² End -->
 
             <div class="d-flex justify-content-between my-3">
+
               <!-- Number of Rooms -->
               <div>
                 <h5>Rooms</h5>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" name="rooms" value="1+0" <%=filters.rooms &&
+                    filters.rooms.includes("1+0") && 'checked' %> />
+                  <label class="form-check-label">
                     1+0
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" name="rooms" value="1+1" <%=filters.rooms &&
+                    filters.rooms.includes("1+1") && 'checked' %> />
+                  <label class="form-check-label">
                     1+1
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" name="rooms" value="2+1" <%=filters.rooms &&
+                    filters.rooms.includes("2+1") && 'checked' %> />
+                  <label class="form-check-label">
                     2+1
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" value="3+1" name="rooms" <%=filters.rooms &&
+                    filters.rooms.includes("3+1") && 'checked' %> />
+                  <label class="form-check-label">
                     3+1
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" value="4+1" name="rooms" <%=filters.rooms &&
+                    filters.rooms.includes("4+1") && 'checked' %> />
+                  <label class="form-check-label">
                     4+1
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" value="4+2" name="rooms" <%=filters.rooms &&
+                    filters.rooms.includes("4+2") && 'checked' %> />
+                  <label class="form-check-label">
                     4+2 and above
                   </label>
                 </div>
@@ -153,187 +125,65 @@
               <!-- Number of Bathrooms -->
               <div>
                 <h5>Bathrooms</h5>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    None
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    1
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    2
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    3
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    4
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    5 and above
-                  </label>
-                </div>
+                <% for(let i=0;i<6;i++){ %>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="bathrooms" value="<%= i %>"
+                      <%=filters.bathrooms && filters.bathrooms.includes(i.toString()) && 'checked' %> />
+                    <label class="form-check-label">
+                      <%= i==0 ? 'None' : (i==5 ? '5 and above' : i ) %>
+                    </label>
+                  </div>
+                  <% } %>
               </div>
               <!-- Number of Bathrooms End -->
             </div>
 
-            <!-- Furnished Selector -->
-            <div class="my-3">
-              <h5>Furnished</h5>
-              <select class="form-select">
-                <option value="izmir">All</option>
-                <option value="izmir">Yes</option>
-                <option value="izmir">No</option>
-              </select>
-            </div>
-            <!-- Furnished Selector End -->
 
-            <!-- Elevator Selector -->
-            <div class="my-3">
-              <h5>Elevator</h5>
-              <select class="form-select my-2">
-                <option value="izmir">All</option>
-                <option value="bornova">Yes</option>
-                <option value="izmir">No</option>
-              </select>
-            </div>
-            <!-- Elevator Selector -->
-
-            <!-- Balcony Selector -->
-            <div class="my-3">
-              <h5>Balcony</h5>
-              <select class="form-select">
-                <option value="izmir">All</option>
-                <option value="izmir">Yes</option>
-                <option value="izmir">No</option>
-              </select>
-            </div>
-            <!-- Balcony Selector End -->
-
-            <!-- On Housing Estate Selector -->
-            <div class="my-3">
-              <h5>On Housing Estate</h5>
-              <select class="form-select my-2">
-                <option value="izmir">All</option>
-                <option value="bornova">Yes</option>
-                <option value="izmir">No</option>
-              </select>
-            </div>
-            <!-- On Housing Estate Selector End -->
 
             <div class="d-flex justify-content-between my-3">
+
               <!-- Building Ages -->
               <div>
                 <h5>Building Age</h5>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" value="0" name="buildingAge" <%=filters.buildingAge &&
+                    filters.buildingAge.includes("0") && 'checked' %> />
+                  <label class="form-check-label">
                     New Building
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" value="5" name="buildingAge" <%=filters.buildingAge &&
+                    filters.buildingAge.includes("5") && 'checked' %> />
+                  <label class="form-check-label">
                     1-5
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" value="10" name="buildingAge" <%=filters.buildingAge
+                    && filters.buildingAge.includes("10") && 'checked' %> />
+                  <label class="form-check-label">
                     6-10
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" name="buildingAge" value="16" <%=filters.buildingAge
+                    && filters.buildingAge.includes("16") && 'checked' %> />
+                  <label class="form-check-label">
                     11-16
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" name="buildingAge" value="20" <%=filters.buildingAge
+                    && filters.buildingAge.includes("20") && 'checked' %> />
+                  <label class="form-check-label">
                     16-20
                   </label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
+                  <input class="form-check-input" type="checkbox" name="buildingAge" value="100" <%=filters.buildingAge
+                    && filters.buildingAge.includes("100") && 'checked' %> />
+                  <label class="form-check-label">
                     21 and above
                   </label>
                 </div>
@@ -343,85 +193,68 @@
               <!-- Number of Floors -->
               <div>
                 <h5>Floor</h5>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    Ground Floor
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    1
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    2
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    3
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    4
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    value=""
-                    id="flexCheckDefault"
-                  />
-                  <label class="form-check-label" for="flexCheckDefault">
-                    5 and above
-                  </label>
-                </div>
+                <% for(let i=0;i<6;i++){ %>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="floor" value="<%= i %>" <%=filters.floor &&
+                      filters.floor.includes(i.toString()) && 'checked' %> />
+                    <label class="form-check-label">
+                      <%= i==0 ? 'Ground Floor' : (i==5 ? '5 and above' : i ) %>
+                    </label>
+                  </div>
+                  <% } %>
+
               </div>
               <!-- Number of Floors End -->
             </div>
 
+            <!-- Furnished Selector -->
+            <div class="my-3">
+              <h5>Furnished</h5>
+              <select class="form-select" name="hasFurnish">
+                <option <%=filters.hasFurnish=='all' && 'selected' %> value="all">All</option>
+                <option <%=filters.hasFurnish=='true' && 'selected' %> value="true">Yes</option>
+                <option <%=filters.hasFurnish=='false' && 'selected' %> value="false">No</option>
+              </select>
+            </div>
+            <!-- Furnished Selector End -->
+
+            <!-- Elevator Selector -->
+            <div class="my-3">
+              <h5>Elevator</h5>
+              <select class="form-select my-2" name="hasElevator">
+                <option <%=filters.hasElevator=='all' && 'selected' %> value="all">All</option>
+                <option <%=filters.hasElevator=='true' && 'selected' %> value="true">Yes</option>
+                <option <%=filters.hasElevator=='false' && 'selected' %> value="false">No</option>
+              </select>
+            </div>
+            <!-- Elevator Selector -->
+
+            <!-- Balcony Selector -->
+            <div class="my-3">
+              <h5>Balcony</h5>
+              <select class="form-select" name="hasBalcony">
+                <option <%=filters.hasBalcony=='all' && 'selected' %> value="all">All</option>
+                <option <%=filters.hasBalcony=='true' && 'selected' %> value="true">Yes</option>
+                <option <%=filters.hasBalcony=='false' && 'selected' %> value="false">No</option>
+              </select>
+            </div>
+            <!-- Balcony Selector End -->
+
+            <!-- On Housing Estate Selector -->
+            <div class="my-3">
+              <h5>On Housing Estate</h5>
+              <select class="form-select my-2" name="isInHousingEstate">
+                <option <%=filters.isInHousingEstate=='all' && 'selected' %> value="all">All</option>
+                <option <%=filters.isInHousingEstate=='true' && 'selected' %> value="true">Yes</option>
+                <option <%=filters.isInHousingEstate=='false' && 'selected' %> value="false">No</option>
+              </select>
+            </div>
+            <!-- On Housing Estate Selector End -->
+
             <!-- Search and Reset Buttons -->
-            <div
-              class="search-area sticky-bottom d-flex justify-content-between w-100 border-top py-2 bg-white"
-            >
-              <button type="submit" class="btn btn-danger w-50 me-2">
+            <div class="search-area sticky-bottom d-flex justify-content-between w-100 border-top py-2 bg-white">
+              <button type="submit" class="btn btn-danger w-100">
                 Search
-              </button>
-              <button type="reset" class="btn btn-outline-danger bg-white w-50">
-                Reset
               </button>
             </div>
             <!-- Search and Reset Buttons End -->
@@ -429,51 +262,155 @@
         </div>
 
         <!-- Search Results -->
-        <div class="col-lg-9 col-md-8 col-sm-7 border my-3">
-          <!-- Number of Results and Sort Selector -->
+        <div class="col-lg-9 col-md-8 col-sm-7 my-3">
+
+          <!-- Count of Results -->
           <div
-            class="p-3 d-flex justify-content-between align-items-center border-bottom flex-column flex-md-row"
-          >
-            <p class="fs-light fs-4">We got 100212 result for Istanbul</p>
-            <select name="sort" class="form-select w-25 sort">
-              <option value="newest">Newest</option>
-              <option value="lowest">Lowest Price</option>
-              <option value="highest">Highest Price</option>
-            </select>
+            class="p-3 border-bottom bg-white shadow-sm mb-2 d-flex justify-content-between align-items-center">
+            <h5 class="text-center fw-normal fs-4">
+               <%= count %> results found
+               
+            </h5>
+            <a href="/<%= path %>">
+            <button class="btn">Clear All Filters <i class="fa-solid fa-xmark ms-2"></i></button>
+            </a>
           </div>
-          <!-- Number of Results and Sort Selector End -->
+          <!-- Count of Results End -->
 
           <!-- Results -->
           <div class="houses">
 
-            <!-- House Card -->
-            <a href="#" class="text-decoration-none text-dark">
-              <div class="house-card border-bottom">
-                <div class="row px-2">
-                  <div class="col-lg-4 p-2">
-                    <img
-                      class="w-100"
-                      src="https://hecdn01.hemlak.com/mncropresize/280/210/ds01/7/5/9/4/7/0/9/3/83b1954f-973c-4227-9cd5-27cf7d268823.jpg"
-                      alt=""
-                    />
-                  </div>
-                  <div class="col-lg-8 p-2 lh-sm">
-                    <div class="d-flex justify-content-between">
-                      <p class="fs-4 fw-bold">1.250.000 TL</p>
-                      <p class="fs-5 text-muted">20.08.2022</p>
+            <% if(houses.length> 0){ %>
+
+              <% houses.forEach((house,index)=>{ %>
+
+                <!-- House Card -->
+                <div class="m-0 p-0">
+                  <div class="row bg-white shadow-sm my-3 mx-1">
+
+                    <!-- Image Area -->
+                    <div class="col-lg-4 p-2 position-relative">
+                      <a href="/houses/<%= house.dataValues.id %>" class="col-lg-4">
+                        <img class="w-100 h-100 house-image" src="<%= house.dataValues.imageUrls[0] %>"
+                          alt="house-image" />
+                      </a>
+                      <a href="/houses/<%= house.dataValues.id %>/favorite">
+                        <button class="btn btn-outline-danger position-absolute favorite-btn">
+                          <% if(favs[index]){ %>
+                            <i class="fa-solid fa-heart"></i>
+                            <% }else{ %>
+                              <i class="fa-regular fa-heart"></i>
+                              <% } %>
+                        </button>
+                      </a>
                     </div>
-                    <p class="fs-5 fw-semibold">
-                      Etiler genç binada asansörlü otoparklı 1+1
-                    </p>
-                    <p class="fs-5">on Sale | 1+1 | 80m² | Age 10 | 2. Floor</p>
-                    <p class="fs-6 text-muted">
-                      <i class="fa-solid fa-location-dot"></i> Etiler / Istanbul
-                    </p>
+                    <!-- Image Area End -->
+
+                    <!-- Info Area -->
+                    <div class="col-lg-8 p-2 lh-sm">
+                      <a href="/houses/<%= house.dataValues.id %>">
+                        <div class="d-flex justify-content-between pe-3">
+                          <p class="fs-4 fw-bold price">
+                            <%= house.dataValues.price %> TL
+                          </p>
+                          <p class="fs-5 text-muted">
+                            <%= moment(house.dataValues.updatedAt).format('DD.MM.YYYY') %>
+                          </p>
+                        </div>
+                        <p class="fs-5 fw-semibold">
+                          <%= house.dataValues.title %>
+                        </p>
+                        <p class="fs-5">
+                          <%= house.dataValues.type.toUpperCase() %> | <%= house.dataValues.rooms %> | <%=
+                                house.dataValues.grossSquareMeter %>m² | Age <%= house.dataValues.buildingAge%> | <%=
+                                    house.dataValues.floor %>. Floor
+                        </p>
+                      </a>
+                      <div class="d-flex justify-content-between">
+                        <a href="/houses/<%= house.dataValues.id %>" class="fs-6 text-muted w-75">
+                          <i class="fa-solid fa-location-dot"></i>
+                          <%= house.dataValues.District.dataValues.name %> / <%= house.dataValues.City.dataValues.name
+                              %>
+                        </a>
+                        <div class="text-end pe-2 d-flex align-items-center justify-content-end">
+                          <a class="fs-3" href="/accounts/<%= house.User.dataValues.id %>">
+                            <img src="<%= house.User.dataValues.imageUrl %>" alt="user-image" class="mini-image h-25" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Info Area End -->
+
                   </div>
                 </div>
-              </div>
-            </a>
-            <!-- House Card End -->
+                <!-- House Card End -->
+
+                <% }) %>
+
+                  <!-- Pagination -->
+                  <nav class="d-flex justify-content-center mt-3">
+                    <ul class="pagination">
+                      <li class="page-item">
+                        <% if(originalUrl==='/sale?page='+page || originalUrl === '/sale' ){ %>
+                          <a class="page-link <%= page==1 && 'disabled' %>"
+                            href="/sale?page=<%= page - 1 %>"><span>&laquo;</span></a>
+                          <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent'  ){ %>
+                            <a class="page-link <%= page==1 && 'disabled' %>"
+                              href="/rent?page=<%= page - 1 %>"><span>&laquo;</span></a>
+                      </li>
+                      <% }else{ %>
+                        <a class="page-link <%= page==1 && 'disabled' %>"
+                          href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= page - 1 %>"><span>&laquo;</span></a>
+                        </li>
+                        <% } %>
+                          </li>
+                          <% for(let i=1; i<=(count%10===0 ? count/10 : count/10 +1 );i++){ %>
+                            <li class="page-item">
+                              <% if(originalUrl ==='/sale?page='+page || originalUrl === '/sale' ){ %>
+                                <a class="page-link <%= page == i && 'active' %> " href="/sale?page=<%= i %>">
+                                  <%= i %>
+                                </a>
+                            </li>
+                            <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent' ){ %>
+                              <a class="page-link <%= page == i && 'active' %> " href="/rent?page=<%= i %>">
+                                <%= i %>
+                              </a></li>
+                              <% }else{ %>
+                                <a class="page-link <%= page == i && 'active' %> "
+                                  href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= i %>">
+                                  <%= i %>
+                                </a></li>
+                                <% } %>
+
+                                  <% } %>
+                                    <li class="page-item">
+                                      <% if(originalUrl==='/sale?page='+page || originalUrl === '/sale' ){ %>
+                                        <a class="page-link <%= count%10 === 0 ? (page==count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
+                                          href="/sale?page=<%= page + 1 %>"><span>&raquo;</span></a>
+                                        <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent' ){ %>
+                                          <a class="page-link <%= count%10 === 0 ? (page==count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
+                                            href="/rent?page=<%= page + 1 %>"><span>&raquo;</span></a>
+                                    </li>
+                                    <% }else{ %>
+                                      <a class="page-link <%= count%10 === 0 ? (page==count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
+                                        href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= page + 1 %>"><span>&raquo;</span></a>
+                                      </li>
+                                      <% } %>
+                                        </li>
+                    </ul>
+                  </nav>
+                  <!-- Pagination End -->
+                  <% }else{ %>
+
+                    <!-- Empty Message -->
+                    <div class="empty text-center bg-white shadow-sm py-5 mt-2 mb-3 px-3">
+                      <i class="fa-solid fa-magnifying-glass-minus text-danger big-icon mb-5"></i>
+                      <h1 class="my-2">Sorry, houses not found.</h1>
+                      <p class="fs-5 text-muted">It might be helpful to expand your criteria.</p>
+                    </div>
+                    <!-- Empty Message End -->
+
+                    <% } %>
 
           </div>
           <!-- Results End -->
@@ -483,5 +420,6 @@
       </div>
     </div>
     <%- include('./layouts/footer') %>
-  </body>
+</body>
+
 </html>
