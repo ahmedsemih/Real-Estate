@@ -10,7 +10,8 @@ const User = sequelize.define("User",{
       defaultValue:DataTypes.UUIDV4()
     },
     imageUrl:{
-      type:DataTypes.STRING
+      type:DataTypes.STRING,
+      defaultValue:"https://res.cloudinary.com/dtzs4c2uv/image/upload/v1666326774/noavatar_rxbrbk.png"
     },
     fullName: {
       type: DataTypes.STRING(50),

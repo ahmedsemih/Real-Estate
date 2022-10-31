@@ -10,7 +10,12 @@
   <%- include('./layouts/navbar.ejs') %>
     <div class="container-md">
       <div class="row">
-        <div id="filter-menu" class="col-lg-3 col-md-4 col-sm-5 my-3 px-3 py-2 bg-white shadow-sm d-none d-sm-block">
+        <div class="d-flex justify-content-center position-fixed bg-white menu-toggle shadow-sm">
+          <button id="menu-btn" class="btn btn-danger mx-3 mb-1 w-100 d-block d-sm-none sticky-top">
+              <i class="fa-solid fa-bars"></i>
+          </button>
+      </div>
+        <div id="filter-menu" class="col-lg-3 col-md-4 col-sm-5 my-3 px-3 py-2 bg-white shadow-sm d-none d-sm-block mt-search">
 
           <!-- Sale or Rent -->
           <nav class="nav nav-tabs nav-fill">
@@ -27,9 +32,8 @@
               <select class="form-select city" id="city" name="city">
                 <option hidden value="404">All Cities</option>
                 <% cities.forEach((city)=>{ %>
-                  <option <%=filters.city==city.dataValues.id && 'selected' %> class="<%= city.dataValues.id %>" value="
-                      <%= city.dataValues.id %>">
-                        <%= city.dataValues.name %>
+                  <option <%=filters.city==city.dataValues.id && 'selected' %> class="<%= city.dataValues.id %>"
+                     value="<%= city.dataValues.id %>"> <%= city.dataValues.name %>
                   </option>
                   <% }) %>
               </select>
@@ -38,8 +42,7 @@
                   All Districts
                 </option>
                 <% districts.forEach((district)=>{ %>
-                  <option <%=filters.district==district.dataValues.id && 'selected' %> class="<%=
-                      district.dataValues.CityId %>"
+                  <option <%=filters.district==district.dataValues.id && 'selected' %> class="<%= district.dataValues.CityId %>"
                       value="<%= district.dataValues.id %>">
                         <%= district.dataValues.name %>
                   </option>
@@ -262,7 +265,7 @@
         </div>
 
         <!-- Search Results -->
-        <div class="col-lg-9 col-md-8 col-sm-7 my-3">
+        <div class="col-lg-9 col-md-8 col-sm-7 my-3 mt-search">
 
           <!-- Count of Results -->
           <div

@@ -84,8 +84,8 @@ exports.addHouse = (req, res) => {
   City.findAll({})
     .then((cities) => {
       District.findAll({}).then((districts) => {
-        House.findAndCountAll({ where: { UserId: userId } }).then((count) => {
-          if (count === 10) {
+        House.findAndCountAll({ where: { UserId: userId } }).then(({count}) => {
+          if (count >= 10) {
             return res.render("new", {
               ...defaultErrors,
               result: "full",

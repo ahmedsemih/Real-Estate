@@ -15,8 +15,7 @@
       <div
         class="alert <%= result === 'success' ? 'alert-success' : 'alert-danger' %>"
       >
-        <%= result === "success" ? "House posting successfully added." :
-        "Somethings went wrong." %>
+        <%= result === "success" ? "House posting successfully added." : (result === "full" ? "You have reached the limit (10)" : "Somethings went wrong.") %>
       </div>
       <% } %>
 
@@ -87,7 +86,7 @@
             <!-- City -->
             <div class="my-2">
               <label for="city">City</label>
-              <select name="city" class="form-control" required>
+              <select name="city" id="city" class="form-control city" required>
                 <option selected hidden value="404">Select City</option>
                 <% cities.forEach((city)=>{ %>
                 <option value="<%= city.dataValues.id %>">
@@ -104,10 +103,10 @@
             <!-- District -->
             <div class="my-2">
               <label for="district">District</label>
-              <select name="district" class="form-control" required>
+              <select name="district" id="district" class="form-control district" required>
                 <option selected hidden value="404">Select District</option>
                 <% districts.forEach((district)=>{ %>
-                <option value="<%= district.dataValues.id %>">
+                <option class="<%= district.dataValues.CityId %>" value="<%= district.dataValues.id %>">
                   <%= district.dataValues.name %>
                 </option>
                 <% }) %>
@@ -149,6 +148,7 @@
                   accept="image/*"
                   id="images"
                   multiple
+                  required
                 />
                 <label class="input-group-text" for="images">Upload</label>
               </div>
@@ -229,16 +229,7 @@
             <!-- Building Age -->
             <div class="my-2">
               <label for="buildingAge">Building Age</label>
-              <select name="buildingAge" class="form-control" required>
-                <option selected hidden>Building Age</option>
-                <option value="0">New Building</option>
-                <option value="1-5">1-5</option>
-                <option value="6-10">6-10</option>
-                <option value="11-15">11-15</option>
-                <option value="16-20">16-20</option>
-                <option value="21-30">21-30</option>
-                <option value="31-50">31 and above</option>
-              </select>
+              <input class="form-control" type="number" name="buildingAge" placeholder="Building Age">
               <% if(buildingAgeError){ %>
               <p class="text-danger"><%= buildingAgeError %></p>
               <% } %>
@@ -248,15 +239,7 @@
             <!-- Floor -->
             <div class="my-2">
               <label for="floor">Floor</label>
-              <select name="floor" class="form-control" required>
-                <option selected hidden>Floor</option>
-                <option value="0">Ground Floor</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5 and above</option>
-              </select>
+              <input class="form-control" type="number" name="floor" placeholder="Floor of The Flat">
               <% if(floorError){ %>
               <p class="text-danger"><%= floorError %></p>
               <% } %>
@@ -521,6 +504,7 @@
             </div>
           </div>
           <!-- Internal Features End -->
+
         </div>
         <div class="d-flex justify-content-end my-3 px-2">
           <button type="submit" class="btn btn-danger px-5 me-3">Add</button>
@@ -530,37 +514,8 @@
         </div>
       </form>
       <!-- House Posting Form End -->
+
     </div>
     <%- include('./layouts/footer.ejs') %>
-    <script>
-      const imagesInput = document.getElementById("images");
-
-      const sendFiles = async () => {
-        const images = document.getElementById("images").files;
-        const urlInput = document.getElementById("imageUrls");
-
-        for (let i = 0; i < images.length; i++) {
-          const data = new FormData();
-
-          data.append("file", images[i]);
-          data.append("upload_preset", "l7zb8egp");
-          data.append("cloud_name", "dtzs4c2uv");
-          fetch("https://api.cloudinary.com/v1_1/dtzs4c2uv/image/upload", {
-            method: "POST",
-            body: data,
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (i === images.length - 1)
-                return (urlInput.innerText += data.url);
-              urlInput.innerText += data.url + " ";
-            });
-        }
-      };
-
-      imagesInput.addEventListener("change", () => {
-        sendFiles();
-      });
-    </script>
   </body>
 </html>

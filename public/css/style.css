@@ -120,8 +120,8 @@ a:focus{
     width:110px;
 }
 .mini-image{
-    width: 110px;
-    height: 110px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
     object-fit: fill;
 }

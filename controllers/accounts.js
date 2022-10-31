@@ -49,8 +49,7 @@ exports.getInfoPage = (req, res) => {
 };
 
 exports.updateUser = (req, res) => {
-  const { fullName, phone, companyName, oldCompanyName, companyAddress, img } =
-    req.body;
+  const { fullName, phone, companyName, oldCompanyName, companyAddress, img } = req.body;
   const currentUser = req.signedCookies.currentUser;
 
   User.update(

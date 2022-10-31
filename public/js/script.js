@@ -14,8 +14,10 @@ function init() {
   const userImageInput = document.getElementById("userImage");
   const citySelection = document.getElementById("city");
   const districtSelection = document.getElementById("district");
-  const priceTexts=document.getElementsByClassName("price");
-  const favoriteBtns=document.getElementsByClassName("favorite-btn");
+  const priceTexts = document.getElementsByClassName("price");
+  const favoriteBtns = document.getElementsByClassName("favorite-btn");
+  const menuBtn = document.getElementById("menu-btn");
+  const filterMenu = document.getElementById("filter-menu");
 
   // Copyright
   const currentDate = new Date();
@@ -66,9 +68,10 @@ function init() {
     }
   };
 
-  imagesInput && imagesInput.addEventListener("change", () => {
-    sendFiles();
-  });
+  imagesInput &&
+    imagesInput.addEventListener("change", () => {
+      sendFiles();
+    });
 
   // Getting districts for selected city
   citySelection &&
@@ -104,31 +107,40 @@ function init() {
         userPhoto.src = data.url;
       });
   };
-  userImageInput && userImageInput.addEventListener("change", () => {
-    sendImage();
-  });
+  userImageInput &&
+    userImageInput.addEventListener("change", () => {
+      sendImage();
+    });
 
   // Adding dot after 3 digit
-  const numberWithDots=(number)=>{
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g,".");
+  const numberWithDots = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
-  for(let i=0;i<priceTexts.length;i++){
+  for (let i = 0; i < priceTexts.length; i++) {
     const price = priceTexts[i].innerText;
-    priceTexts[i].innerText=numberWithDots(price);
+    priceTexts[i].innerText = numberWithDots(price);
   }
 
   // Adding to favorite
-  for(let i=0;i<favoriteBtns.length;i++){
-    favoriteBtns[i].addEventListener("click",()=>{
-      let exist=favoriteBtns[i].innerHTML.includes('<i class="fa-solid fa-heart"></i>');
-      if(!exist){
-        favoriteBtns[i].innerHTML='<i class="fa-solid fa-heart"></i>';
-        exist=true;
-      }else{
-        favoriteBtns[i].innerHTML='<i class="fa-regular fa-heart"></i>';
-        exist=false
-      } 
+  for (let i = 0; i < favoriteBtns.length; i++) {
+    favoriteBtns[i].addEventListener("click", () => {
+      let exist = favoriteBtns[i].innerHTML.includes(
+        '<i class="fa-solid fa-heart"></i>'
+      );
+      if (!exist) {
+        favoriteBtns[i].innerHTML = '<i class="fa-solid fa-heart"></i>';
+        exist = true;
+      } else {
+        favoriteBtns[i].innerHTML = '<i class="fa-regular fa-heart"></i>';
+        exist = false;
+      }
     });
   }
+
+  // Toggle Menu
+  menuBtn && menuBtn.addEventListener("click",()=>{
+    window.scroll(0,0);
+    filterMenu.classList.toggle("d-none");
+  });
 }

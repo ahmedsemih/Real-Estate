@@ -10,6 +10,8 @@
     <div class="container-md d-flex justify-content-center align-items-center flex-column py-5">
       <form class="form-div p-3 mb-2" action="/auth/signup" method="POST">
             <h1 class="text-center mb-5">Create Account</h1>
+
+            <!-- Account Type Selector -->
             <div class="fs-5 d-flex align-items-center auth-type mx-auto">
               <p class="toggle-left-label">Individual</p>
               <div class="form-check form-switch mb-3">
@@ -17,12 +19,19 @@
               </div>
               <p class="ms-1">Corporate</p>
             </div>
+            <!-- Account Type Selector End -->
+
+            <!-- Error Message -->
             <% if(message){ %>
               <div class="text-bg-danger form-control p-3 mb-3">
                 <i class="fa-solid fa-triangle-exclamation me-2"></i>
                 <%= message %>
               </div>
             <% } %>
+              <!-- Error Message End -->
+
+          <!-- User Informations -->
+            <!-- Fullname Area -->
             <div class="input-group mt-3">
               <span class="input-group-text bg-danger text-white">
                 <i class="fa-solid fa-user"></i>
@@ -35,6 +44,9 @@
             <% if(fullNameError){ %>
               <p class="text-danger"><%= fullNameError %></p>
             <% } %>
+            <!-- Fullname Area End -->
+
+            <!-- Email Area -->
             <div class="input-group mt-3">
               <span class="input-group-text bg-danger text-white">
                 <i class="fa-solid fa-envelope"></i>
@@ -47,6 +59,9 @@
             <% if(emailError){ %>
               <p class="text-danger"><%= emailError %></p>
             <% } %>
+            <!-- Email Area End -->
+            
+            <!-- Phone Area -->
             <div class="input-group mt-3">
               <span class="input-group-text bg-danger text-white">
                 <i class="fa-solid fa-phone"></i>
@@ -59,6 +74,9 @@
             <% if(phoneError){ %>
               <p class="text-danger"><%= phoneError %></p>
             <% } %>
+            <!-- Phone Area End -->
+            
+            <!-- Password Area -->
             <div class="input-group mt-3">
                 <span class="input-group-text bg-danger text-white">
                   <i class="fa fa-lock"></i>
@@ -71,22 +89,31 @@
             <% if(passwordError){ %>
               <p class="text-danger"><%= passwordError %></p>
             <% } %>
+            <!-- Password Area End -->
+          <!-- User Informations End -->
+
+            <!-- Company Informations -->
             <div class="<%= isCorporate ? 'd-block' : 'd-none' %>" id="corporateArea">
               <p class="fs-5 text-center fw-bold">Company Informations</p>
+
+              <!-- Company Type -->
               <div class="d-flex justify-content-between my-2">
-              <div class="form-check me-3 fs-5">
-                <input class="form-check-input" type="radio" name="type" id="realEstate" checked value="Real Estate Office">
-                <label class="form-check-label" for="realEstate">
-                  Real Estate Office
-                </label>
+                <div class="form-check me-3 fs-5">
+                  <input class="form-check-input" type="radio" name="type" id="realEstate" checked value="Real Estate Office">
+                  <label class="form-check-label" for="realEstate">
+                    Real Estate Office
+                  </label>
+                </div>
+                <div class="form-check fs-5">
+                  <input class="form-check-input" type="radio" name="type" id="buildingCompany" value="Building Company">
+                  <label class="form-check-label" for="buildingCompany">
+                    Building Company
+                  </label>
+                </div>
               </div>
-              <div class="form-check fs-5">
-                <input class="form-check-input" type="radio" name="type" id="buildingCompany" value="Building Company">
-                <label class="form-check-label" for="buildingCompany">
-                  Building Company
-                </label>
-              </div>
-            </div>
+              <!-- Company Type End -->
+
+              <!-- Company Name -->
               <div class="input-group mt-3">
                 <span class="input-group-text bg-danger text-white">
                   <i class="fa-solid fa-building"></i>
@@ -99,6 +126,9 @@
               <% if(companyNameError){ %>
                 <p class="text-danger"><%= companyNameError %></p>
               <% } %>
+              <!-- Company Name End -->
+
+              <!-- Company Address -->
               <div class="input-group mt-3">
                 <span class="input-group-text bg-danger text-white">
                   <i class="fa-solid fa-location-dot"></i>
@@ -111,8 +141,12 @@
               <% if(companyAddressError){ %>
                 <p class="text-danger"><%= companyAddressError %></p>
               <% } %>
+              <!-- Company Address End -->
+
             </div>
-            <div class="mb-3">
+            <!-- Company Informations End -->
+
+            <div class="mb-3 mt-2">
               <input class="form-check-input me-1" type="checkbox" id="terms" name="terms" value="yes">
               <label class="form-check-label" for="terms">
                   I agree the <em href="#">Terms of Service</em> and <em href="#">Privacy Policy</em>.
