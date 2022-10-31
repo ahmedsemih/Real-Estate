@@ -9,16 +9,29 @@
 </head>
 <body>
     <%- include("./layouts/navbar.ejs") %>
-    <div class="container-md my-5">
-    <div class="text-center bg-white shadow-sm py-5 my-3">
-        <i class="fa-solid fa-face-sad-tear text-danger big-icon mb-5"></i>
-        <h1 class="my-2">404</h1>
-        <p class="fs-4 text-muted">Sorry, page not found.</p>
-        <a href="/">
-          <button class="btn btn-danger mt-5 px-5">Go Home</button>
-        </a>
-      </div>
-    </div>
+    <% if(search){ %>
+      <div class="container-md py-5 bg-white shadow-sm">
+        <div class="text-center py-5 my-3">
+            <i class="fa-solid fa-face-sad-tear text-danger big-icon mb-5"></i>
+            <h1 class="my-2">What is <%= q %>?</h1>
+            <p class="fs-4 text-muted">Sorry, what you were looking for was not found.</p>
+            <a href="/">
+              <button class="btn btn-danger mt-5 px-5">Go Home</button>
+            </a>
+          </div>
+        </div>
+      <% }else{ %>
+        <div class="container-md py-5 bg-white shadow-sm">
+        <div class="text-center py-5 my-3">
+            <i class="fa-solid fa-face-sad-tear text-danger big-icon mb-5"></i>
+            <h1 class="my-2">404</h1>
+            <p class="fs-4 text-muted">Sorry, page not found.</p>
+            <a href="/">
+              <button class="btn btn-danger mt-5 px-5">Go Home</button>
+            </a>
+          </div>
+        </div>
+    <% } %>
     <%- include("./layouts/footer.ejs") %>
 </body>
 </html>

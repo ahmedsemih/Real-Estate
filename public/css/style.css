@@ -31,6 +31,10 @@ a:focus{
     color: inherit;
 }
 
+.menu-toggle{
+    z-index: 100;
+}
+
 /* HOME PAGE */
 .home{
     overflow-x: hidden;
@@ -78,6 +82,10 @@ a:focus{
 }
 .house-image{
     max-height: 205px;
+}
+
+.house-mini-image{
+    max-height: 178px;
 }
 
 .house-card{
@@ -238,6 +246,12 @@ input::-webkit-inner-spin-button {
     }
 }
 
+@media screen and (max-width:575px){
+    .mt-search{
+        margin-top: 50px !important;
+    }
+}
+
 @media screen and (max-width:768px){
     .follow-link{
         font-size: 22px !important;
@@ -263,6 +277,9 @@ input::-webkit-inner-spin-button {
 @media screen and (max-width:991px){
     .house-image{
         max-height: 250px;
+    }
+    .house-mini-image{
+        max-height: 125px;
     }
 }
 

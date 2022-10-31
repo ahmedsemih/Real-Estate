@@ -16,12 +16,14 @@
                     <h1 class="brand d-flex align-items-center"><i class="fa-solid fa-house-chimney me-3"></i><span
                             class="fw-bolder">REAL ESTATE</span></h1>
                 </a>
-                <div class="input-group mb-3 rounded-pill my-5">
-                    <input type="text" class="form-control p-2"
-                        placeholder="Search a location... (e.g. : Ankara, Istanbul)">
-                    <button class="btn btn-danger px-3" type="button"><i
-                            class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
+                
+                <!-- Searchbar -->
+                <form action="/search" method="GET" class="input-group mb-3 rounded-pill my-5">
+                        <input type="text" class="form-control p-2" name="q" placeholder="Search a city, district or seller...">
+                        <button class="btn btn-danger px-3" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+                <!-- Searchbar End -->
+
                 <div class="mt-4 d-flex justify-content-center">
                     <a href="/sale">
                         <div class="search-button mx-5 fs-3 d-flex flex-column align-items-center">
@@ -45,7 +47,7 @@
             </div>
             <div
                 class="position-absolute d-flex flex-column align-items-center fs-5 lh-1 bottom-0 start-50 translate-middle">
-                <p>Scroll down to take a look</p>
+                <p class="d-none d-md-block">Scroll down to take a look</p>
                 <i class="fa-solid fa-chevron-down"></i>
             </div>
         </div>
@@ -55,20 +57,20 @@
         <div class="discover container-md py-5" id="discover">
 
             <!-- Sale -->
-            <h2 class="mb-3 fw-light p-2 border-bottom">New Sale Listings</h2>
+            <h2 class="mb-3 p-2 border-bottom">New Sale Listings</h2>
             <div class="cards mb-5 row">
-
+            <% if(sales.length>0){ %>
                 <% sales.forEach((house,index)=>{ %>
                     <div class="p-2 col-sm-6 col-md-4 col-lg-3">
                         <div class="card m-0">
-                            <img src="<%= house.dataValues.imageUrls[1]%>" class="card-img-top house-image"
+                            <img src="<%= house.dataValues.imageUrls[0]%>" class="card-img-top house-mini-image"
                                 alt="house-image">
                             <div class="card-body fs-5">
                                 <h5 class="card-title mb-3 fs-4 price">
                                     <%= house.dataValues.price %> ₺
                                 </h5>
                                 <p class="info">
-                                    <%= house.dataValues.type.toUpperCase() %> | 
+                                    <span class="text-capitalize"><%= house.dataValues.type %></span> | 
                                     <%= house.dataValues.rooms %> | 
                                     <%= house.dataValues.grossSquareMeter%>m² | 
                                     <%= house.dataValues.floor %>. Floor
@@ -92,25 +94,27 @@
                         </div>
                     </div>
                     <% }) %>
-
+                <% }else{ %>
+                    <p class="fs-4 ps-4">Sorry, there are no house posting yet.</p>
+                <% } %>
             </div>
             <!-- Sale End -->
 
             <!-- Rent -->
-            <h2 class="my-3 fw-light p-2 border-bottom"">New Rent Listings</h2>
+            <h2 class="my-3 p-2 border-bottom"">New Rent Listings</h2>
           <div class=" cards mb-5 row">
-
+            <% if(rents.length > 0){ %>
                 <% rents.forEach((house,index)=>{ %>
                     <div class="p-2 col-sm-6 col-md-4 col-lg-3">
                         <div class="card m-0">
-                            <img src="<%= house.dataValues.imageUrls[1]%>" class="card-img-top house-image"
+                            <img src="<%= house.dataValues.imageUrls[0]%>" class="card-img-top house-image"
                                 alt="house-image">
                             <div class="card-body fs-5">
                                 <h5 class="card-title mb-3 fs-4 price">
                                     <%= house.dataValues.price %> ₺
                                 </h5>
                                 <p class="info">
-                                    <%= house.dataValues.type.toUpperCase() %> | <%= house.dataValues.rooms %> | <%=
+                                    <span class="text-capitalize"><%= house.dataValues.type %></span> | <%= house.dataValues.rooms %> | <%=
                                                 house.dataValues.grossSquareMeter%>m² | <%= house.dataValues.floor %>.
                                                     Floor
                                 </p>
@@ -134,7 +138,9 @@
                         </div>
                     </div>
                     <% }) %>
-
+                <% }else{ %>
+                    <p class="fs-4 ps-4">Sorry, there are no house posting yet.</p>
+                <% } %>
         </div>
         <!-- Rent End -->
 

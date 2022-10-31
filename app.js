@@ -36,7 +36,8 @@ app.use("/houses", houseRoutes);
 app.use("/reports", reportRoutes);
 app.use("/admin",adminRoutes);
 app.get("*",(req,res)=>{
-  res.render("notfound");
+  const {q}=req.query;
+  res.render("notfound",{search:false,q});
 });
 
 app.listen(PORT, () => {

@@ -2,6 +2,7 @@ const { Op } = require("sequelize");
 const City = require("../models/City");
 const District = require("../models/District");
 const House = require("../models/House");
+const User = require("../models/User");
 const checkFavorite = require("../utils/checkFavorite");
 
 exports.getHomePage = async (req, res) => {
@@ -19,9 +20,36 @@ exports.getHomePage = async (req, res) => {
     limit: 4,
     include: [City, District],
   });
-  const all = await sales.concat(rents);
+  const all = sales.concat(rents);
   const favs = await checkFavorite(all, currentUser);
   return res.render("home", { rents, sales, favs });
+};
+
+exports.doSearch = async (req,res)=>{
+  const {q}=await req.query;
+    
+  // Getting city by name
+  const city = await City.findOne({where:{name:{[Op.iLike]:q}}});
+  if(city) return res.redirect(`/sale?city=${city.dataValues.id}`);
+  
+  // Getting district by name
+  const district = await District.findOne({where:{name:{[Op.iLike]:q}}});
+  if(district) return res.redirect(`/sale?district=${district.dataValues.id}`);
+  
+  // Getting seller by name or company name
+  const seller = await User.findOne({where:{[Op.or]:[{fullName:{[Op.iLike]:q}},{companyName:{[Op.iLike]:q}}]}});
+  if (seller) return res.redirect(`accounts/${seller.dataValues.id}`);
+  
+  // Getting type
+  switch(q){
+    case "sale":
+      res.redirect("/sale");
+      break;
+    case "rent":
+      res.redirect("/rent");
+    default:
+      return res.render("notfound",{search:true,q});
+  }
 };
 
 exports.getSearchPage = async (req, res) => {
@@ -41,11 +69,12 @@ exports.getSearchPage = async (req, res) => {
     buildingAge,
     floor,
   } = req.query;
+
   const filters = await req.query;
   const currentUser = await req.signedCookies.currentUser;
-  const page = (await req.query.page) || 1;
+  const page = await req.query.page || 1;
   const path = await req.path.split("/")[1];
-  console.log(req.path)
+
   const urlForPage = await req.url.split("isInHousingEstate")[0];
   const originalUrl = await req.originalUrl;
 
