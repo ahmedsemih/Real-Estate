@@ -81,7 +81,7 @@ a:focus{
     min-height: 470px;
 }
 .house-image{
-    max-height: 150px;
+    max-height: 215px;
 }
 
 .house-mini-image{
@@ -158,6 +158,10 @@ input::-webkit-inner-spin-button {
 
 .sort{
     min-width: 100px;
+}
+
+#filter-menu{
+    max-height: 1180px !important;
 }
 
 /* AUTH */
