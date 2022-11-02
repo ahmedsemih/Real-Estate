@@ -81,7 +81,7 @@ a:focus{
     min-height: 470px;
 }
 .house-image{
-    max-height: 205px;
+    max-height: 150px;
 }
 
 .house-mini-image{
@@ -275,9 +275,6 @@ input::-webkit-inner-spin-button {
 }
 
 @media screen and (max-width:991px){
-    .house-image{
-        max-height: 250px;
-    }
     .house-mini-image{
         max-height: 125px;
     }

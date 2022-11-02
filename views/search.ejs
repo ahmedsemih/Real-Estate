@@ -356,15 +356,13 @@
                       <li class="page-item">
                         <% if(originalUrl==='/sale?page='+page || originalUrl === '/sale' ){ %>
                           <a class="page-link <%= page==1 && 'disabled' %>"
-                            href="/sale?page=<%= page - 1 %>"><span>&laquo;</span></a>
+                            href="/sale?page=<%= Number(page) - 1 %>"><span>&laquo;</span></a>
                           <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent'  ){ %>
                             <a class="page-link <%= page==1 && 'disabled' %>"
-                              href="/rent?page=<%= page - 1 %>"><span>&laquo;</span></a>
-                      </li>
+                              href="/rent?page=<%= Number(page) - 1 %>"><span>&laquo;</span></a>
                       <% }else{ %>
                         <a class="page-link <%= page==1 && 'disabled' %>"
-                          href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= page - 1 %>"><span>&laquo;</span></a>
-                        </li>
+                          href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= Number(page) - 1 %>"><span>&laquo;</span></a>
                         <% } %>
                           </li>
                           <% for(let i=1; i<=(count%10===0 ? count/10 : count/10 +1 );i++){ %>
@@ -373,33 +371,30 @@
                                 <a class="page-link <%= page == i && 'active' %> " href="/sale?page=<%= i %>">
                                   <%= i %>
                                 </a>
-                            </li>
-                            <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent' ){ %>
+                               <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent' ){ %>
                               <a class="page-link <%= page == i && 'active' %> " href="/rent?page=<%= i %>">
                                 <%= i %>
-                              </a></li>
+                              </a>
                               <% }else{ %>
                                 <a class="page-link <%= page == i && 'active' %> "
                                   href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= i %>">
                                   <%= i %>
-                                </a></li>
+                                </a>
                                 <% } %>
-
-                                  <% } %>
+                              </li>
+                                    <% } %>
                                     <li class="page-item">
-                                      <% if(originalUrl==='/sale?page='+page || originalUrl === '/sale' ){ %>
+                                    <% if(originalUrl==='/sale?page='+page || originalUrl === '/sale' ){ %>
                                         <a class="page-link <%= count%10 === 0 ? (page==count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
-                                          href="/sale?page=<%= page + 1 %>"><span>&raquo;</span></a>
-                                        <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent' ){ %>
-                                          <a class="page-link <%= count%10 === 0 ? (page==count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
-                                            href="/rent?page=<%= page + 1 %>"><span>&raquo;</span></a>
-                                    </li>
+                                          href="/sale?page=<%= Number(page) + 1 %>"><span>&raquo;</span></a>
+                                    <% }else if( originalUrl==='/rent?page='+page || originalUrl === '/rent' ){ %>
+                                        <a class="page-link <%= count%10 === 0 ? (page==count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
+                                            href="/rent?page=<%= Number(page) + 1 %>"><span>&raquo;</span></a>
                                     <% }else{ %>
                                       <a class="page-link <%= count%10 === 0 ? (page==count/10 && 'disabled') : (page>count/10 && 'disabled') %>"
-                                        href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= page + 1 %>"><span>&raquo;</span></a>
-                                      </li>
-                                      <% } %>
-                                        </li>
+                                        href="<%= urlForPage %>isInHousingEstate=<%= filters.isInHousingEstate %>&page=<%= Number(page) + 1 %>"><span>&raquo;</span></a>
+                                    <% } %>
+                                    </li>
                     </ul>
                   </nav>
                   <!-- Pagination End -->
