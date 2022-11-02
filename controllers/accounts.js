@@ -336,7 +336,7 @@ exports.getSellerPage = (req, res) => {
 exports.getFavoritePage=(req,res)=>{
   const {id}=req.params;
   const page=req.query.page || 1;
-  Favorite.findAndCountAll({where:{UserId:id},include:[House,User,{model:House,include:[District,City]}],limit:10,offset:(page-1)*10})
+  Favorite.findAndCountAll({where:{UserId:id},include:[House,User,{model:House,include:[{ all: true }]}],limit:10,offset:(page-1)*10})
   .then((result)=>{
     return res.render("favorites",{favorites:result.rows,count:result.count,page});
   }).catch((error)=>console.log(error));
