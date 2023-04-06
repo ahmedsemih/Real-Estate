@@ -4,7 +4,31 @@ https://user-images.githubusercontent.com/102798814/199418338-4f5209e5-fc25-404c
 
 Responsive Fullstack Real Estate Application.
 
-**Live demo: [https://ase-real-estate.herokuapp.com](https://ase-real-estate.herokuapp.com)**
+## Features
+
+In this application users can post a home listing or review existing listings. They can do many filtering in the search section. If they like a house, can add it to favorites or contact the seller of the house. So this app becomes a bridge between seller and buyer like its counterparts.
+
+### User Role
+
+- Contains "Individual", "Real Estate Office" and "Building Company" roles.
+
+- Posts a house.
+
+- Edits or deletes their own houses.
+
+- Reviews other houses.
+
+- Reports fraudulent houses.
+
+### Admin Role
+
+- Does everything users do.
+
+- Examines reported houses.
+
+- Removes fake house postings.
+
+- Bans users.
 
 ## Built with
 
@@ -34,35 +58,7 @@ Responsive Fullstack Real Estate Application.
 
 - [SendGrid](https://sendgrid.com/solutions/email-api/) - For Send A Recovery Email
 
-- [Heroku](https://www.heroku.com/) - Cloud Hosting
-
 - [Cloudinary](https://cloudinary.com/) - Cloud Storage
-
-## Features
-
-In this application users can post a home listing or review existing listings. They can do many filtering in the search section. If they like a house, can add it to favorites or contact the seller of the house. So this app becomes a bridge between seller and buyer like its counterparts.
-
-### User Role
-
-- Contains "Individual", "Real Estate Office" and "Building Company" roles.
-
-- Posts a house.
-
-- Edits or deletes their own houses.
-
-- Reviews other houses.
-
-- Reports fraudulent houses.
-
-### Admin Role
-
-- Does everything users do.
-
-- Examines reported houses.
-
-- Removes fake house postings.
-
-- Bans users.
 
 ## Getting Started
 
